@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>Teorema de Pitágoras — exemplo com senha</title>
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#fbfcff,#0d1422);--ink:light-dark(#16213a,#e8edf7);--soft:light-dark(#55607a,#9aa6bf);--card:light-dark(#fff,#121b2e);--line:light-dark(#d5ddeb,#2a3756);--grid:light-dark(#dfe7f5,#1b2740);--red:light-dark(#d62828,#ff6b6b);--mat:light-dark(#2451c7,#7ea2ff)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:16px;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,Segoe UI,sans-serif;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:20px 20px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;max-width:420px;width:100%;box-shadow:0 18px 40px -22px rgba(22,33,58,.45)}
+.box svg{width:44px;height:44px;color:var(--red)}
+h1{font-size:24px;line-height:1.15;margin:10px 0 6px}
+p{color:var(--soft);margin:0 0 16px}
+label{font-weight:600;display:block;margin-bottom:4px}
+input[type=password]{width:100%;font-size:16px;padding:10px 12px;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-height:48px}
+input[type=password]:focus{outline:none;border-color:var(--mat)}
+.ck{display:flex;gap:8px;align-items:center;font-weight:400;margin:12px 0 16px;color:var(--soft);font-size:15px}
+button{width:100%;min-height:50px;border:0;border-radius:10px;background:var(--red);color:#fff;font:700 17px system-ui,sans-serif;cursor:pointer}
+button:disabled{opacity:.6}
+#m{color:var(--red);font-weight:600;min-height:1.5em;margin:12px 0 0}
+a{color:var(--mat);font-weight:600;text-decoration:none;display:inline-block;margin-top:14px}
+.bar{position:fixed;inset:0 0 auto 0;height:56px;display:flex;gap:10px;align-items:center;padding:0 12px;background:var(--card);border-bottom:1px solid var(--line)}
+.bar b{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar a{margin:0;border:2px solid var(--mat);border-radius:8px;padding:6px 12px}
+iframe{position:fixed;top:56px;left:0;width:100%;height:calc(100% - 56px);border:0}
+</style></head><body>
+<main class="box">
+<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+<h1>Teorema de Pitágoras — exemplo com senha</h1>
+<p>Este material é protegido. Digite a senha que o professor enviou para você.</p>
+<form id="f"><label for="s">Senha</label><input id="s" type="password" autocomplete="current-password" required autofocus>
+<label class="ck"><input type="checkbox" id="lem"> Lembrar a senha neste aparelho</label>
+<button id="b">Abrir</button><p id="m" role="alert"></p></form>
+<a href="../../index.html">← Voltar ao site</a>
+</main>
+<script>
+{
+const D={"i":600000,"s":"NE9ZOHxl5dgIcxx0vuJy3Q==","v":"xSCdEGqT9uVPpQfu","c":"182q3uJNe+kB6cy+czJbGIkAx4Ve0T2zarPKOEKGeANn01GZ2x9mHupDuU531son76vo5Bm/z44ZGNHTCEkSkhKgvmEDU/oxn6MmkdqfFswE1zAqZl6Z70wytUA6hW7sm3aXSgIlxdQJTcKhU45CZTWHFcL4W/zmJT00906K0nCW2QGes17xwxojITPzKufQjU04Ii+mBDkBFgIWiSAcmiLUwspNwYBMvHH2oi3C+biBGWkO6sFIMYSrHnz3w53dhQmXghxKXBPPK+LNAWd0IYfXIraWO1Kopqkspiv7A17OG5sMwb3tqq3xCUDU3JD7J/cNSl7Vp4pcxx4SSiLsjn8EOX3PFHX2OiV6dz8ypm0EUPeKJmSxFL8zd1tloLH82C+DOe93TN7mUJxSsjs28S/jkZakaVXKD55aasi4B2ErBGeB8PGb/kN8bgVRrMgGE22AbHBCm3oFeiavi/k/DC2NtW24ubFMjWOEWCbAGWoiLtrLB2/0TyVaK4NhgHdu8hwMFGPGKCVYSv9fkn5d1vgiqsLG3FqUezlxKzWyd7lCVQrfF7wL403kddQSbN+QV9GVPNLfpP4Fhzs95V8V6MGZIMjiktieRqRXY2Jh54qsuyyCLQypHCBibFncFVJB3tmBo+fHSbTKwV1UlbjCFS09NpfGzl4PWC/CSoI039IcE15EkMfnOGkDmO8DiAeaa0eXE80k2wufppeSvY2mHx2MQywODCE2git9kWTytFJXP5Zo3fSopPm2hzi8s3+iWyrobih4oUFW82IZ35tfVQZXWnMnlhufECZN6wT13mDwlcGIXuPrEDCfoJ9j9NFVwUyBda073NjzXHhYYoE+MowrA0ur0I239ssYrnPLQ2uRzEHDHEeg/Dcw4JWpkxP4E6KKCPWCp5/9PA042LyDVMSp81nW3DEbgeSE+GMaU8Vscd2GnsAREz6uuMXOvMDhYW6bHrhQ9AjSUBfcjyRU8++QIq5XDfkEHIlc5f5X5X0yBA86wYmC3rF5d3MDf+4BUb+sRWAGWl0/QaaawSdbSCzx2/LfEuXokJrRQe20/jJqxpMl6Z53WnB1lsaiJd65m/fSpizayJijS4AbRPdV7XIjrNSqxkt85lgf74whAu+z/53YoIzt5Z4zzxxodpjXvs6fkZHX9abb/Eg2FBXHSNZ3k2Tl/802oTe3VzJnm1WfeUyuW+8KDoa1X4GmsdlY4BqhePNm3U+jjIjNDRpm9bJa84EXtUOuWB/5kkRiC55GmCRCG8IZEFATzx+lSLSfF/39Eyw8hm5NDSnkDqcGxSAqL1PA3qn6hsP9yxJ5paHygAg9F/ftPUNL6Xxco+SYONNUxP67ATR5ayw7lubdEKs1i6tPdKmRIYtuhPMMOFu0H4teXScSB+VAGLt9Z1sa6I0qwmOxMcE5V7BOXs/Hmvevjfxz4uVQAAjBY64edLFs+acLg0laFd1yfOzZP4Qfyi/jODWJ/fzKeK0n0I4HzZZvYfRw0TfuGeXve5iv/2V7Qp/M0R3vuZFOeXRkWz9c6nPHRpDfuE7B7aZd+BlvJpOWRMtqkeB1JJgFW9nI08iZNSvvr0oKveq4j6m18tv/s8ox9pMOZiGHguT8xQm18Vo8U9EWKVXzHIA1/L2qllN2AENYFl+Tauj58IH5+LnGa0OhWLKFrAkRnsVGd3nChMv5iCiPmjWif9lnRJXkFfMoyef4zLrfcHTGcYB+yMhmBOAyZp+gRtZ/WeXV/eKD3Lm7PUjU0ZrAsZAVKUjkHPmNKuLuevoOGSp4cSTG1TLsM8eRjIoh2F1wQ0v5EE6N0dhoT5S2yi5mnv0XMfnqNN4IiWyFkgmbR7iPN9pjH2H4N+9L/oXisuBJ/1lhASJ19qlJy0Lhj0HOYmh7HGuZ7a8HvC4twBwYOftJDzEuURishnMUmnMidllQ49Nc+zUgM23DHeDiEuDtsbn1VSDD+se18Ga91ChtJWKkbG44P7P6KYI80XaFwwNr+7PiqxgI8ueLztYDKV/tgaLgU5pRWcx6i6Kiz49oOp8A+EzlD8XeGIh6rD0pL9x9Jzd3MLczAn3OCY0kd9+xAUMlRfn15WHoNyRHD0XUqDLrOlsrFyv+SPgnpAMOMX4cKdURO1drybaC478pvtJiYYfxYDSAvWJhj5H44wkBUeNsxvroeP5/nSI5oucf4K3k1Zr5KR4cLE3+30QpsiQaUAItz991BTnIqrWOwzV7EOhpv2lF9o/Hg3ZkZzJoUqewtRM19x8QlQaNVDKHr4Xbzd2vSTXjElqk7Sp/S2ykKwz6uweUGRVi5I5bQvGAixwdpEcf1XEJyCktW//d0oJLOG9syuoHz1tZPyiJhpXdznmPNRpKYmfcH8FmJxYrJr7/cKE+0wba4wF0lsQwyB4odsbgL6Wn+gdnhQDszs3p87r4PkafDOj7jBpi2gJu7kt7hanipYywcCvcz2I4+BHIIrCvZqY+mlQYrr5oMTg157YxurmfsovukaqZkaBQRP2hhrovXudlgwKvYqbEiXAjUsdZUuPLODiIbDrIl04F2hC9/9rvwvgTb6qT3/p0a5VRtqKNQcC5tr6pKXUkXigbo/0ax1kVu85SI3dlHzm7E3K7uNl+8T8njHdC4o3xI9ZEkFzlsr2C1WvDOF/56r6Wp+2RgkTwnly59UpxVwhUL4cv4XqDByrHDIbP0Io6zrQo8z4CQra8YWuAVBhWwD5bUMmRb/3smBUfEQMjrGP/uFksFBLRwgkk7QEOtQ+8yOV+xVSplSPkt+LRYSoM6BUzFQiTjGjV7ljH7j587+ugGKABVNTQ8TsVPmiwX82qw/r1zUB+Y8wVDYhu0a9T4mpHczR+SzsFqxHt+xEdJPbixoBstwgxfIduE3OtleI/cUA6Ump5MMWYQ65QQf+m7i8hcDc0a3iWY48alUOlUqSKHEgT/Ikv4JWsVOH1hrOvEHxWxuqI4af9uxOj5pLGOPCw0yTtkVPQTeXhTuCfY3LqoeOQR65lxXHAz+afwYn1yQvI4GWdYAp13yabeHcKRWPuTettc49j7nZuGMLpcIEYUtOFCeOwdiNznEx4JCbVR7vHIPV+bKhWtSSFoGUyj6UjsHSjtFHKRR4gM4gCdiF5QkyI4joAiNMCT1Oexsq2lMs4O9r8TpOes+nhHNx4SzwhANiRWQmv//QdwIpHUQmWje/QrUQ0EUVSaRFAT3C9NLR0xtFtz1QmYy1Q3Ed41c7Qegbcc9J7z6Exz3bdg89rm1teccwiPsL06DI3ZtstkGcAJiYm88wXPLQVEQ4tOQvr8YCws00jrntk/4LrZ6YrAlkKodWyZE2k90POASS80Pqqwc0Uxr8zFlibKwZsnaDZGVveKRgGmALNujYDSn2KTvFI1NRsGyOIzS0c/E+yZ7rkNPXfpfmx67Ys+EZ9Qmwix8s3Y8NLabfdlJO0Iioky3DJE2gvVjctkzSy4aEvFk+KIEwye40w8/0uIt67XRltQQYSolTvbgomwnJ581jMBR5Qd1OgcljegmIKb1RGzutHv9ir5T4qZlIkyxMML0vOF5Aeut8pWcng6xnjg3wmE+iP4Y+yIJ1vFkK9xTuOyQqn/xxXP22ZKxUR/dn+PzfUL4ooFhc2TRwJcfE5Nei5RZggt8ZvCpER6wROmo9ZkjnqxNnobSez6WNjUCsBLUSmlpoZQi87dcCu/wrIqtQDy6BOavYyDXfTk+PjJOTzFNKibxBTF6xVY1fDtaWP0Ratqr+qOqCDLeSWTjmuzSE2xs4djADd6DTU8RISeE6r9atzQq4jqhnURKgYEHSmWN/s/mMsvyhGCp5j8gJ+aQV50jmgLDBzNr9jDcXcZlG+VUvK4fUo0x7Xk36dW+df2+Q21rqG6S7w8PJAyGtMGWAU4zmYFxqjA6scNujcq4P9ORLKulTZV6LPUu8IuzxS8KynT9FXmO9YkkigXcWBCjfkycDV531lmCbbfOjRhCXkeNYaUq2Lyqim2+gQ6ePS9HQ87Wj4lHA5tY/Jr9B17RHofIZcxdQRESUjb4rK1GyAFvCseoprfNGDjqOYC+ynCsUBWulCYuLU+3Q4mESSv+zGneJusxz4lqoYEvGATdD2L95m6sksiqlehgbRw7DbvpO9WN5ig/RGQypxhmzCKlI6TvxJveBUesYmGrXdwoTWX5StNYs1Rma4MtfMN6AIn6RpFWfsXlfiUuiEFhRXwpkRHAIqs8emPwRq4B7fHL62EWMb8+nAcEg8pjf5atAyMyY3UaLBX8PTRKAUXk5n+D5xwAVNT3zu+r8s08+V1g4hNC2f+kkYvfimmnkRxXHgi6oFdQwW2A1jXjgBSDfVcvFYh2CuBvDeoG5SrLozYB4wV/2cckOkJeJHVdbQ7WmLjiuz5lXUtmCmudnkyC+7sQDAKgrh9KjtcY98tDTjgJmuSxm1hjyhYlg+MTYecM3UVXftl+hClEIBQYtcNH3S6qU3ifcXJ74tJbWMyi5DFq3bLLx3597D6VEGYD5XWN8MVH3EJYf0d9jyM/NPlxL5UjwTFKcimz9SZ5ox5j8rqipa6c65IiiF4gBOk6XSYCTA4saBlRqzmH0rp9tRzn+DI5qK5hazZR39xG30S107mEVxDeUNgM8fXVR1HyrtjxbpXzAwp+WsISuCDt2CHIbzwFzP/DfMoVYrWaZzrHjt3THjI1hKk9lmJy2pafPWk+UcaZ41zx+FI+TrSNTme1cdI/dHXX8kLMBmPTXfZnWnR/DPnpSgIqws0EqvtRSlgIVNDzOu0WZO0NW8LkyDMDKU9dTkuKlbCHZYjwo81NjAS1IXh99e0F73zxmdo6FeUGj3e7RaH2obLk4bd8G0Ttr2QnXPr0kwyh2eu53kVYfQGsCHfi1WY4u2TLgEezSnjl0fcx+dRIMB6oE9ClXlP74W3A5UUeaUS82z1y+d6Mi8kISQzWGg1f9ofP56Yc+/2zWWFzLc82OJBi2axNCMs+l2UOZnmDz2gm+b2M70Fm5j7vFXhmassobqvDMFAGD2MwSodQNrQnQjGhL+0s3Sb7jY1PihjuekYZQhcgnmALj0Mn/z+/vGe1hVFVNZfHGVGTdE41G2te9TgMrfZC7llk3oYa52mt8tpiDOKrKKXF5CzE/gsSBYEVD+9dTRHwc9zFeP/b2UOKMw+6gBL+6fIPF8jjm+8HYwsEn5m62sUwvRiahdoRHy4NdfLFc3R0H/ivrHc3pJeokrMY7b4gJdIPHlYyM0N7ZSZwQ1NF4xAo2iGk/K3M1jGrVv7OIz5EG6A/fDXL9Gdt0vZEOEp1Ya+3UrhGwqY0yaYkwELaQIN0+gCg0GL7M1AWMAEJbVDNHgVELkZofoFXLmn8XlCV3XZ7PEVFPTNZ0n88gTh8pYB3t1y91fCUfRBVZWX3mCMHwFXZphkscB9BulYs53kq8cClaEWb1wHH2AA8+IlqN6XtXehFq8MA+2+iiT2nreFDbbKEZTc8uoqvffxoWmn0Af6wg0ImNkwWULWxMoUgZCKJTAk7YfC8BzmWvWmCupQduwBk3TLTzVCFZ2ya2fsk/vMdM7zLpdvGWXZFRqOtaZ6+oFDr8E97YKPPGxCx9bEjsgBcqGjX/TvpGoZTnFgCKkNgIt2V4s9iQHErV3Od0eRnYjoXsSYJc73y9+3I53cEWHjC3SSwlTWQeHCFJaIGKCsRLbfk03e/i7N2Ve+gIGPZd/njliUgpyfpoT3v35f+2w7FQZUonVAi2poh5lr8DKTkORPaJFT2crpg6QaqNZFu8BT1s1ZnSbakk40nOec4npXw1qRZumvS2rg4+utpUENZOzJEGntcWsSwEoEpSuO+MvtfTthB1qZ/IruVgeD7mlb6TyM4MnV6QDz5M5D/XSzpnkw4E72VHCG6WeYAizfG3aWhb+Ktga5JpHntW1/RNjYRcNnFJCRGJ1Hy4VU2c/F+LJE6f6i8s50Aywfgv40IZKM2F2xGnqgoHVBrPbW2Zv6erjnzY2SxvlJyowNXX5rW98OuZ+FC/CW/hxpOTAv+6Imv7+l1SUpFKZmDsAn3j7doI2n7M4sT+dQnJ/GQkl0qiajISEO8nKMFvkVWpSEdK2Io8E1vZbRwcDUjcaXn8u2dhvKwpCGSC3N3FGBkWoQ7Fc1NyuJ3yYjAsY1L+6bGBHDmm+6h7zSkrHwuE+/txmOnD0Tw0uMUyuUQp8nFLvpRGFI2Y=","t":"html","n":"EXEMPLO_PITAGORAS.html"};
+const u=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+const K="senha:"+location.pathname;
+async function abrir(pw){
+  const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);
+  const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:u(D.s),iterations:D.i,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["decrypt"]);
+  return new Uint8Array(await crypto.subtle.decrypt({name:"AES-GCM",iv:u(D.v)},key,u(D.c)));
+}
+function mostrar(bytes){
+  if(D.t==="html"){const h=new TextDecoder().decode(bytes);document.open();document.write(h);document.close();return}
+  const url=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"}));
+  document.body.innerHTML='<div class="bar"><b></b><a target="_blank" rel="noopener">Abrir em tela cheia</a><a>Baixar PDF</a></div><iframe title="PDF"></iframe>';
+  document.querySelector(".bar b").textContent=document.title;
+  const l=document.querySelectorAll(".bar a");l[0].href=url;l[1].href=url;l[1].download=D.n;
+  document.querySelector("iframe").src=url;
+}
+async function tentar(pw,lembrar){
+  const b=document.getElementById("b"),m=document.getElementById("m");
+  b.disabled=true;b.textContent="Abrindo…";m.textContent="";
+  try{const bytes=await abrir(pw);try{if(lembrar)localStorage.setItem(K,pw)}catch(e){}mostrar(bytes);return true}
+  catch(e){try{localStorage.removeItem(K)}catch(x){}m.textContent="Senha incorreta. Confira com o professor.";b.disabled=false;b.textContent="Abrir";return false}
+}
+document.getElementById("f").addEventListener("submit",e=>{e.preventDefault();tentar(document.getElementById("s").value,document.getElementById("lem").checked)});
+let g=null;try{g=localStorage.getItem(K)}catch(e){}
+if(g)tentar(g,false);
+}
+</script></body></html>
