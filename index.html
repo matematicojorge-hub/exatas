@@ -22,7 +22,7 @@
   --line:light-dark(#d5ddeb,#2a3756);--red:light-dark(#d62828,#ff6b6b);
   --mat:light-dark(#2451c7,#7ea2ff);--fis:light-dark(#d62828,#ff7a7a);--qui:light-dark(#0d7a6f,#4fd1c0);
   --on:light-dark(#fff,#0d1422);--band:light-dark(#16213a,#e8edf7);--bandink:light-dark(#fbfcff,#0d1422)}
-:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+:root,:root[data-theme=light],:root[data-theme=dark]{color-scheme:light}
 *{box-sizing:border-box;min-width:0}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Archivo,system-ui,sans-serif;overflow-x:clip}
