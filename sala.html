@@ -17,7 +17,8 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
 .grp{display:flex;gap:4px;align-items:center}
 .grp+.grp{padding-left:8px;border-left:1px solid var(--bar2)}
 .bar button,.bar select{min-height:36px;padding:0 8px;border-radius:8px;border:1px solid var(--bar2);background:var(--bar2);color:var(--ink);font:600 13px system-ui,sans-serif;cursor:pointer;white-space:nowrap}
-.bar select{max-width:200px}
+.bar select{width:auto;max-width:150px}
+.bar #sel{max-width:190px}
 .bar button[aria-pressed=true]{background:var(--ink);color:var(--bar);border-color:var(--ink)}
 .bar button:disabled{opacity:.35;cursor:default}
 .bar button:focus-visible,.bar select:focus-visible{outline:3px solid #7ea2ff;outline-offset:1px}
@@ -30,6 +31,8 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
 .quadro .so-quadro{display:flex}
 #bExcluir{display:none;background:#d62828;border-color:#d62828}
 .temsel #bExcluir{display:inline-block}
+.bar .sosel{display:none}
+.temsel .bar .sosel{display:inline-block}
 .stage{position:relative;flex:1;background:#fff;overflow:hidden}
 .stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff;color-scheme:light}
 .stage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
@@ -72,6 +75,7 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
     </div>
     <!-- SETOR 2: ferramentas -->
     <div class="grp">
+      <button data-t="sel" aria-pressed="false" title="Selecionar: arraste um retângulo em volta do que quer mover, girar ou apagar (G)">Selecionar</button>
       <button data-t="hand" aria-pressed="true" title="Clicar na aula / mover figuras e rolar o quadro (M). T alterna Mouse e Caneta">Mouse</button>
       <button data-t="pen" aria-pressed="false" title="Caneta (P)">Caneta</button>
       <button data-t="hl" aria-pressed="false" title="Marca-texto (H)">Marca-texto</button>
@@ -92,7 +96,7 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
     <!-- SETOR 5: só no quadro -->
     <div class="grp so-quadro">
       <select id="inserir" aria-label="Inserir figura">
-        <option value="">Inserir figura…</option>
+        <option value="">Inserir…</option>
         <option value="imagem">Imagem do computador…</option>
         <option value="equacao">Equação…</option>
         <optgroup label="Figuras planas"><option value="reta">Reta / segmento</option><option value="ret">Retângulo</option><option value="tri">Triângulo</option><option value="trir">Triângulo retângulo</option><option value="circ">Círculo / elipse</option><option value="los">Losango</option><option value="trap">Trapézio</option><option value="paral">Paralelogramo</option><option value="pent">Pentágono</option><option value="hex">Hexágono</option><option value="eixos">Eixos x e y</option></optgroup>
@@ -101,13 +105,14 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
       <input type="file" id="imgArq" accept="image/*" hidden>
       <button id="bEq" title="Inserir equação (Q de quadro + botão)">Equação</button>
       <button id="bFill" aria-pressed="false" title="Preencher as figuras planas com cor clara">Preencher</button>
-      <button id="bExcluir" title="Excluir a figura selecionada (Delete)">Excluir figura</button>
+      <select id="girar" class="sosel" aria-label="Girar ou inverter a seleção"><option value="">Girar…</option><option value="d90">Girar 90° para a direita</option><option value="e90">Girar 90° para a esquerda</option><option value="180">Girar 180°</option><option value="iv">Inverter verticalmente</option><option value="ih">Inverter horizontalmente</option></select>
+      <button id="bExcluir" title="Excluir o que está selecionado (Delete)">Excluir</button>
       <select id="fundo" aria-label="Fundo do quadro"><option value="quad">Quadriculado</option><option value="pauta">Pautado</option><option value="branco">Branco</option></select>
       <button id="bAnt" title="Página anterior">◀</button><span class="pg" id="pg">1 / 1</span><button id="bProx" title="Próxima página">▶</button>
       <button id="bNova" title="Nova página (N)">+ Página</button>
       <button id="bSalvar" title="Salvar a página inteira como imagem (S)">Salvar imagem</button>
     </div>
-    <div class="grp"><button id="bTela" title="Tela cheia (F)">Tela cheia</button></div>
+    <div class="grp"><button id="bTela" title="Tela cheia (F)" aria-label="Tela cheia">⛶</button></div>
   </div>
   <div class="stage" id="stage">
     <iframe id="fr" title="Aula"></iframe>
@@ -145,7 +150,7 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
   const CORES=[["#16213a","Preto"],["#2451c7","Azul"],["#d62828","Vermelho"],["#0d7a6f","Verde"],["#f2b705","Amarelo"]];
   const ESPS=[[2,"Fina"],[4,"Média"],[8,"Grossa"]];
   const novaPagina=()=>({strokes:[],objs:[],undo:[],qy:0});
-  const S={modo:"aula",tool:"hand",cor:CORES[0][0],esp:4,fill:false,aula:"",ann:{},pages:[novaPagina()],page:0,fundo:"quad",sx:0,sy:0,sel:null};
+  const S={modo:"aula",tool:"hand",cor:CORES[0][0],esp:4,fill:false,grp:null,aula:"",ann:{},pages:[novaPagina()],page:0,fundo:"quad",sx:0,sy:0,sel:null};
   let atual=null,erasing=null,arrasto=null,sujo=true,ultimaEscrita="pen";
 
   // ================= SETOR A: menus =================
@@ -213,8 +218,9 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
   function seta(c,x1,y1,x2,y2){const a=Math.atan2(y2-y1,x2-x1),t=12;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();c.beginPath();c.moveTo(x2,y2);c.lineTo(x2-t*Math.cos(a-.4),y2-t*Math.sin(a-.4));c.lineTo(x2-t*Math.cos(a+.4),y2-t*Math.sin(a+.4));c.closePath();c.fill()}
   function linha(c,pts,trac){c.setLineDash(trac?[8,6]:[]);c.beginPath();c.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)c.lineTo(pts[i][0],pts[i][1]);c.stroke();c.setLineDash([])}
   function elipse(c,cx,cy,rx,ry,a0,a1,trac){c.setLineDash(trac?[8,6]:[]);c.beginPath();c.ellipse(cx,cy,Math.max(rx,.1),Math.max(ry,.1),0,a0,a1);c.stroke();c.setLineDash([])}
+  function transf(c,o,ox,oy){if(o.rot||o.fx||o.fy){const b=caixa(o),cx=b.x+b.w/2-ox,cy=b.y+b.h/2-oy;c.translate(cx,cy);c.rotate(o.rot||0);c.scale(o.fx?-1:1,o.fy?-1:1);c.translate(-cx,-cy)}}
   function forma(c,o,ox,oy){
-    c.save();c.strokeStyle=o.cor;c.fillStyle=o.cor;c.lineWidth=Math.max(2,o.esp*.75);c.lineJoin="round";c.lineCap="round";
+    c.save();transf(c,o,ox,oy);c.strokeStyle=o.cor;c.fillStyle=o.cor;c.lineWidth=Math.max(2,o.esp*.75);c.lineJoin="round";c.lineCap="round";
     if(o.k==="img"){const b=caixa(o);if(o.img.complete)c.drawImage(o.img,b.x-ox,b.y-oy,b.w,b.h);c.restore();return}
     if(o.k==="texto"){c.font=`${o.tam}px system-ui,Segoe UI,sans-serif`;c.textBaseline="top";o.txt.split("\n").forEach((l,i)=>c.fillText(l,o.x-ox,o.y-oy+i*o.tam*1.25));c.restore();return}
     if(o.t==="reta"){linha(c,[[o.x-ox,o.y-oy],[o.x+o.w-ox,o.y+o.h-oy]]);c.restore();return}
@@ -254,10 +260,12 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
     }
     return null;
   }
+  function giroKnob(c,cx,top){c.beginPath();c.moveTo(cx,top);c.lineTo(cx,top-24);c.stroke();c.beginPath();c.arc(cx,top-30,8,0,7);c.fillStyle="#fff";c.fill();c.lineWidth=2.5;c.stroke()}
   function selecao(c,o,ox,oy){
-    const b=caixa(o);c.save();c.strokeStyle="#2451c7";c.lineWidth=1.5;c.setLineDash([6,4]);c.strokeRect(b.x-ox-6,b.y-oy-6,b.w+12,b.h+12);c.setLineDash([]);
-    c.fillStyle="#2451c7";c.fillRect(o.x+o.w-ox-8,o.y+o.h-oy-8,16,16);c.restore();
+    const b=caixa(o);c.save();transf(c,o,ox,oy);c.strokeStyle="#2451c7";c.lineWidth=1.5;c.setLineDash([6,4]);c.strokeRect(b.x-ox-6,b.y-oy-6,b.w+12,b.h+12);c.setLineDash([]);
+    c.fillStyle="#2451c7";c.fillRect(o.x+o.w-ox-8,o.y+o.h-oy-8,16,16);giroKnob(c,b.x+b.w/2-ox,b.y-oy-6);c.restore();
   }
+  function selecaoGrupo(c,ox,oy){const b=caixaGrupo(S.grp);if(!b)return;c.save();c.strokeStyle="#2451c7";c.lineWidth=1.5;c.setLineDash([6,4]);c.strokeRect(b.x-ox-8,b.y-oy-8,b.w+16,b.h+16);c.setLineDash([]);giroKnob(c,b.x+b.w/2-ox,b.y-oy-8);c.restore()}
   function fimConteudo(cam){let m=0;cam.strokes.forEach(s=>s.pts.forEach(p=>{if(p[1]>m)m=p[1]}));cam.objs.forEach(o=>{const b=caixa(o);if(b.y+b.h>m)m=b.y+b.h});return m}
   function cena(c,w,hh,ox,oy,comSel){
     const cam=camada();
@@ -265,6 +273,8 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
     cam.objs.forEach(o=>forma(c,o,ox,oy));
     cam.strokes.forEach(s=>traco(c,s,ox,oy));if(atual)traco(c,atual,ox,oy);
     if(comSel&&S.sel&&cam.objs.includes(S.sel))selecao(c,S.sel,ox,oy);
+    if(comSel&&S.grp)selecaoGrupo(c,ox,oy);
+    if(comSel&&arrasto&&arrasto.tipo==="laco"){const a=arrasto;c.save();c.strokeStyle="#2451c7";c.fillStyle="rgba(36,81,199,.08)";c.setLineDash([5,4]);const x=Math.min(a.p0[0],a.p1[0])-ox,y=Math.min(a.p0[1],a.p1[1])-oy,w=Math.abs(a.p1[0]-a.p0[0]),hh=Math.abs(a.p1[1]-a.p0[1]);c.fillRect(x,y,w,hh);c.strokeRect(x,y,w,hh);c.restore()}
   }
   function desenhar(){
     ctx.setTransform(dpr,0,0,dpr,0,0);const [ox,oy]=off();cena(ctx,W,H,ox,oy,true);
@@ -281,17 +291,67 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
 
   // ================= SETOR D: caneta, mouse e figuras =================
   const ponto=e=>{const r=cv.getBoundingClientRect(),[ox,oy]=off();return [e.clientX-r.left+ox,e.clientY-r.top+oy,e.pressure||.5]};
-  const dentro=(o,p)=>{const b=caixa(o),m=8;return p[0]>=b.x-m&&p[0]<=b.x+b.w+m&&p[1]>=b.y-m&&p[1]<=b.y+b.h+m};
-  const naAlca=(o,p)=>Math.abs(p[0]-(o.x+o.w))<14&&Math.abs(p[1]-(o.y+o.h))<14;
-  function selecionar(o){S.sel=o;app.classList.toggle("temsel",!!o);sujo=true}
+  // ---- geometria da seleção (com rotação) ----
+  const centroObj=o=>{const b=caixa(o);return [b.x+b.w/2,b.y+b.h/2]};
+  function local(o,p,c0){const c=c0||centroObj(o),r=-(o.rot||0),dx=p[0]-c[0],dy=p[1]-c[1];let x=dx*Math.cos(r)-dy*Math.sin(r),y=dx*Math.sin(r)+dy*Math.cos(r);if(o.fx)x=-x;if(o.fy)y=-y;return [c[0]+x,c[1]+y]}
+  const dentro=(o,p)=>{const q=local(o,p),b=caixa(o),m=8;return q[0]>=b.x-m&&q[0]<=b.x+b.w+m&&q[1]>=b.y-m&&q[1]<=b.y+b.h+m};
+  const naAlca=(o,p)=>{const q=local(o,p);return Math.abs(q[0]-(o.x+o.w))<14&&Math.abs(q[1]-(o.y+o.h))<14};
+  const noGiro=(o,p)=>{const q=local(o,p),b=caixa(o);return Math.hypot(q[0]-(b.x+b.w/2),q[1]-(b.y-36))<16};
+  function caixaGrupo(g){if(!g)return null;let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;const add=(x,y)=>{if(x<x0)x0=x;if(y<y0)y0=y;if(x>x1)x1=x;if(y>y1)y1=y};
+    g.strokes.forEach(s=>s.pts.forEach(q=>add(q[0],q[1])));g.objs.forEach(o=>{const b=caixa(o);add(b.x,b.y);add(b.x+b.w,b.y+b.h)});return x0>x1?null:{x:x0,y:y0,w:x1-x0,h:y1-y0}}
+  const noGiroGrupo=p=>{const b=caixaGrupo(S.grp);return b&&Math.hypot(p[0]-(b.x+b.w/2),p[1]-(b.y-38))<16};
+  const dentroGrupo=p=>{const b=caixaGrupo(S.grp);return b&&p[0]>=b.x-10&&p[0]<=b.x+b.w+10&&p[1]>=b.y-10&&p[1]<=b.y+b.h+10};
+  function selecionar(o){S.sel=o;if(o)S.grp=null;app.classList.toggle("temsel",!!(S.sel||S.grp));sujo=true}
+  function selecionarGrupo(g){S.grp=g;if(g)S.sel=null;app.classList.toggle("temsel",!!(S.sel||S.grp));sujo=true}
+  // ---- transformar (mover, girar, inverter) com desfazer ----
+  const conjAtual=()=>S.grp?S.grp:S.sel?{strokes:[],objs:[S.sel]}:null;
+  const centroConj=g=>{if(g.objs.length===1&&!g.strokes.length)return centroObj(g.objs[0]);const b=caixaGrupo(g);return [b.x+b.w/2,b.y+b.h/2]};
+  function foto(g){return {strokes:g.strokes.map(s=>({s,pts:s.pts.map(q=>q.slice())})),objs:g.objs.map(o=>({o,x:o.x,y:o.y,w:o.w,h:o.h,rot:o.rot||0,fx:!!o.fx,fy:!!o.fy}))}}
+  function restaurar(f){f.strokes.forEach(e=>e.s.pts=e.pts.map(q=>q.slice()));f.objs.forEach(e=>Object.assign(e.o,{x:e.x,y:e.y,w:e.w,h:e.h,rot:e.rot,fx:e.fx,fy:e.fy}));sujo=true}
+  function aplicar(f,fp,dRot,fh,fv){
+    f.strokes.forEach(e=>e.s.pts=e.pts.map(q=>{const n=fp(q);return [n[0],n[1],q[2]]}));
+    f.objs.forEach(e=>{const o=e.o;
+      if(o.t==="reta"){const a=fp([e.x,e.y]),b=fp([e.x+e.w,e.y+e.h]);Object.assign(o,{x:a[0],y:a[1],w:b[0]-a[0],h:b[1]-a[1]});return}
+      const b=caixa(e),n=fp([b.x+b.w/2,b.y+b.h/2]);o.x=n[0]-b.w/2;o.y=n[1]-b.h/2;o.w=b.w;o.h=b.h;
+      o.rot=(fh||fv?-e.rot:e.rot)+dRot;o.fx=fh?!e.fx:e.fx;o.fy=fv?!e.fy:e.fy});
+    sujo=true;
+  }
+  const girarPt=(c,t)=>q=>{const dx=q[0]-c[0],dy=q[1]-c[1];return [c[0]+dx*Math.cos(t)-dy*Math.sin(t),c[1]+dx*Math.sin(t)+dy*Math.cos(t)]};
+  function girarMenu(op){const g=conjAtual();if(!g)return;const c=centroConj(g),f=foto(g);
+    if(op==="d90")aplicar(f,girarPt(c,Math.PI/2),Math.PI/2);
+    else if(op==="e90")aplicar(f,girarPt(c,-Math.PI/2),-Math.PI/2);
+    else if(op==="180")aplicar(f,girarPt(c,Math.PI),Math.PI);
+    else if(op==="ih")aplicar(f,q=>[2*c[0]-q[0],q[1]],0,true,false);
+    else if(op==="iv")aplicar(f,q=>[q[0],2*c[1]-q[1]],0,false,true);
+    camada().undo.push({tipo:"estado",f});}
+  function excluirGrupo(){const c=camada(),g=S.grp;if(!g)return;c.strokes=c.strokes.filter(s=>!g.strokes.includes(s));c.objs=c.objs.filter(o=>!g.objs.includes(o));c.undo.push({tipo:"delgrp",g});selecionarGrupo(null)}
+  function fecharLaco(a){
+    const x0=Math.min(a.p0[0],a.p1[0]),x1=Math.max(a.p0[0],a.p1[0]),y0=Math.min(a.p0[1],a.p1[1]),y1=Math.max(a.p0[1],a.p1[1]);
+    if(x1-x0<4&&y1-y0<4){selecionarGrupo(null);return}
+    const den=(x,y)=>x>=x0&&x<=x1&&y>=y0&&y<=y1,cam=camada();
+    const st=cam.strokes.filter(s=>{let a=1e9,b=1e9,c=-1e9,d=-1e9;s.pts.forEach(q=>{a=Math.min(a,q[0]);b=Math.min(b,q[1]);c=Math.max(c,q[0]);d=Math.max(d,q[1])});return den((a+c)/2,(b+d)/2)});
+    const ob=cam.objs.filter(o=>{const q=centroObj(o);return den(q[0],q[1])});
+    if(!st.length&&ob.length===1){selecionar(ob[0]);return}
+    if(!st.length&&!ob.length){selecionarGrupo(null);aviso("Nada dentro do retângulo");return}
+    selecionarGrupo({strokes:st,objs:ob});aviso("Arraste para mover · bolinha de cima para girar · menu Girar · Delete apaga");
+  }
   cv.addEventListener("pointerdown",e=>{
     const p=ponto(e);cv.setPointerCapture(e.pointerId);
-    if(S.tool==="hand"){ // só chega aqui no quadro
+    if(S.tool==="hand"||S.tool==="sel"){
       const cam=camada();
-      if(S.sel&&naAlca(S.sel,p)){arrasto={tipo:"redim",o:S.sel,antes:{x:S.sel.x,y:S.sel.y,w:S.sel.w,h:S.sel.h,tam:S.sel.tam}};return}
+      if(S.grp){
+        if(noGiroGrupo(p)){const g=S.grp,c=centroConj(g);arrasto={tipo:"girarG",c,a0:Math.atan2(p[1]-c[1],p[0]-c[0]),f:foto(g)};return}
+        if(dentroGrupo(p)){arrasto={tipo:"moverG",p0:p,f:foto(S.grp)};return}
+      }
+      if(S.sel){
+        if(noGiro(S.sel,p)){const c=centroObj(S.sel);arrasto={tipo:"girar",o:S.sel,c,a0:Math.atan2(p[1]-c[1],p[0]-c[0]),f:foto({strokes:[],objs:[S.sel]})};return}
+        if(naAlca(S.sel,p)){arrasto={tipo:"redim",o:S.sel,c0:centroObj(S.sel),antes:{x:S.sel.x,y:S.sel.y,w:S.sel.w,h:S.sel.h,tam:S.sel.tam}};return}
+      }
       const o=[...cam.objs].reverse().find(o=>dentro(o,p));
       if(o){selecionar(o);arrasto={tipo:"mover",o,p0:p,antes:{x:o.x,y:o.y,w:o.w,h:o.h,tam:o.tam}};return}
-      selecionar(null);arrasto={tipo:"rolar",y0:e.clientY,qy0:cam.qy};cv.style.cursor="grabbing";return;
+      selecionar(null);selecionarGrupo(null);
+      if(S.tool==="sel"){arrasto={tipo:"laco",p0:p,p1:p};return}
+      arrasto={tipo:"rolar",y0:e.clientY,qy0:cam.qy};cv.style.cursor="grabbing";return;
     }
     if(S.tool==="texto"){const cam=camada(),o=[...cam.objs].reverse().find(o=>o.k==="texto"&&dentro(o,p));abrirTexto(o||null,p);return}
     const borr=S.tool==="eraser"||(e.buttons&32)||e.button===5;
@@ -299,13 +359,18 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
     if(S.tool==="reta"||S.tool==="vetor"){atual={tool:S.tool,cor:S.cor,esp:S.esp,pts:[p,p.slice()]};sujo=true;return}
     atual={tool:S.tool,cor:S.tool==="corr"?"#ffffff":S.cor,esp:S.esp,pen:e.pointerType==="pen",pts:[p]};sujo=true;
   });
+  const passo15=(t,sh)=>sh?Math.round(t/(Math.PI/12))*(Math.PI/12):t;
   cv.addEventListener("pointermove",e=>{
     if(arrasto){
       const p=ponto(e),a=arrasto,o=a.o;
       if(a.tipo==="rolar"){camada().qy=Math.max(0,a.qy0-(e.clientY-a.y0));sujo=true;return}
+      if(a.tipo==="laco"){a.p1=p;sujo=true;return}
+      if(a.tipo==="moverG"){const dx=p[0]-a.p0[0],dy=p[1]-a.p0[1];aplicar(a.f,q=>[q[0]+dx,q[1]+dy],0);return}
+      if(a.tipo==="girarG"||a.tipo==="girar"){const t=passo15(Math.atan2(p[1]-a.c[1],p[0]-a.c[0])-a.a0,e.shiftKey);aplicar(a.f,girarPt(a.c,t),t);return}
       if(a.tipo==="mover"){o.x=a.antes.x+p[0]-a.p0[0];o.y=a.antes.y+p[1]-a.p0[1]}
-      else if(o.k==="texto"){const k=Math.max(.2,(p[0]-o.x)/a.antes.w);o.tam=Math.max(10,Math.round(a.antes.tam*k));medirTexto(o)}
-      else{o.w=p[0]-o.x;o.h=p[1]-o.y;if(o.k==="img"){o.w=Math.max(20,o.w);o.h=o.w*o.ratio}}
+      else{const q=local(o,p,a.c0);
+        if(o.k==="texto"){const k=Math.max(.2,(q[0]-o.x)/a.antes.w);o.tam=Math.max(10,Math.round(a.antes.tam*k));medirTexto(o)}
+        else{o.w=q[0]-o.x;o.h=q[1]-o.y;if(o.k==="img"){o.w=Math.max(20,o.w);o.h=o.w*o.ratio}}}
       sujo=true;return;
     }
     if(erasing){apagar(ponto(e));return}
@@ -316,6 +381,8 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
   });
   const fim=()=>{
     if(arrasto){const a=arrasto;arrasto=null;cv.style.cursor="";
+      if(a.tipo==="laco"){fecharLaco(a);sujo=true;return}
+      if(a.tipo==="moverG"||a.tipo==="girarG"||a.tipo==="girar"){camada().undo.push({tipo:"estado",f:a.f});sujo=true;return}
       if(a.tipo!=="rolar"){const o=a.o;if(o.k!=="img"&&o.t!=="reta"){const b=caixa(o);Object.assign(o,b)}
         if(a.antes.x!==o.x||a.antes.y!==o.y||a.antes.w!==o.w||a.antes.h!==o.h)camada().undo.push({tipo:"mover",o,antes:a.antes})}
       if(a.tipo==="redim"||a.tipo==="mover"){if(a.o.tam===undefined)delete a.antes.tam}
@@ -357,7 +424,7 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
   document.addEventListener("paste",colar);
   stage.addEventListener("dragover",e=>e.preventDefault());
   stage.addEventListener("drop",e=>{e.preventDefault();const f=[...e.dataTransfer.files].find(f=>f.type.startsWith("image/"));if(f)inserirImagem(f)});
-  function excluir(){const c=camada(),o=S.sel;if(!o)return;const i=c.objs.indexOf(o);if(i<0)return;c.objs.splice(i,1);c.undo.push({tipo:"delobj",o,i});selecionar(null)}
+  function excluir(){if(S.grp){excluirGrupo();return}const c=camada(),o=S.sel;if(!o)return;const i=c.objs.indexOf(o);if(i<0)return;c.objs.splice(i,1);c.undo.push({tipo:"delobj",o,i});selecionar(null)}
 
   // ================= SETOR D2: texto e equação =================
   function medirTexto(o){ctx.save();ctx.font=`${o.tam}px system-ui,Segoe UI,sans-serif`;const ls=o.txt.split("\n");o.w=Math.max(20,...ls.map(l=>ctx.measureText(l).width));o.h=ls.length*o.tam*1.25;ctx.restore()}
@@ -415,25 +482,27 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
 
   // ================= SETOR E: ações =================
   function desfazer(){
-    const c=camada(),u=c.undo.pop();if(!u)return;
+    const c=camada(),u=c.undo.pop();if(!u)return;if(u.tipo==="delgrp"||u.tipo==="limpou")selecionarGrupo(null);
     if(u.tipo==="traco")c.strokes=c.strokes.filter(s=>s!==u.s);
     else if(u.tipo==="apagou")c.strokes.push(...u.itens);
     else if(u.tipo==="limpou"){c.strokes=u.itens;c.objs=u.objs}
     else if(u.tipo==="obj"){c.objs=c.objs.filter(o=>o!==u.o);if(S.sel===u.o)selecionar(null)}
     else if(u.tipo==="delobj")c.objs.splice(u.i,0,u.o);
     else if(u.tipo==="mover")Object.assign(u.o,u.antes);
+    else if(u.tipo==="estado")restaurar(u.f);
+    else if(u.tipo==="delgrp"){c.strokes.push(...u.g.strokes);c.objs.push(...u.g.objs)}
     sujo=true;
   }
-  function limpar(){const c=camada();if(!c.strokes.length&&!c.objs.length)return;c.undo.push({tipo:"limpou",itens:c.strokes,objs:c.objs});c.strokes=[];c.objs=[];selecionar(null);sujo=true;aviso("Tela limpa — Desfazer traz de volta")}
-  function ferramenta(t){if(t==="texto")modo("quadro");if(t!=="hand"&&t!=="eraser"&&t!=="texto")ultimaEscrita=t;S.tool=t;document.querySelectorAll("[data-t]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));app.classList.toggle("mao",t==="hand");if(t!=="hand")selecionar(null)}
+  function limpar(){const c=camada();if(!c.strokes.length&&!c.objs.length)return;c.undo.push({tipo:"limpou",itens:c.strokes,objs:c.objs});c.strokes=[];c.objs=[];selecionar(null);selecionarGrupo(null);sujo=true;aviso("Tela limpa — Desfazer traz de volta")}
+  function ferramenta(t){if(t==="texto")modo("quadro");if(t!=="hand"&&t!=="eraser"&&t!=="texto"&&t!=="sel")ultimaEscrita=t;S.tool=t;document.querySelectorAll("[data-t]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));app.classList.toggle("mao",t==="hand");if(t!=="hand"&&t!=="sel"){selecionar(null);selecionarGrupo(null)}}
   function modo(m){
     if(S.modo===m)return;
-    S.modo=m;app.classList.toggle("quadro",m==="quadro");selecionar(null);
+    S.modo=m;app.classList.toggle("quadro",m==="quadro");selecionar(null);selecionarGrupo(null);
     $("bAula").setAttribute("aria-pressed",m==="aula");$("bQuadro").setAttribute("aria-pressed",m==="quadro");
     pagina();sujo=true;
   }
   function pagina(){$("pg").textContent=(S.page+1)+" / "+S.pages.length;$("bAnt").disabled=S.page===0;$("bProx").disabled=S.page===S.pages.length-1}
-  function irPagina(i){S.page=i;selecionar(null);pagina();sujo=true}
+  function irPagina(i){S.page=i;selecionar(null);selecionarGrupo(null);pagina();sujo=true}
   function nova(){S.pages.push(novaPagina());irPagina(S.pages.length-1)}
   function salvar(){
     if(S.modo!=="quadro")return;
@@ -459,7 +528,9 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
     if(aplicarCorSel())return;
     if(S.tool==="eraser"||S.tool==="hand"||S.tool==="corr"||S.tool==="texto")ferramenta("pen")}));
   $("corLivre").addEventListener("input",e=>{S.cor=e.target.value;document.querySelectorAll(".cor").forEach(x=>x.setAttribute("aria-pressed","false"));if(!aplicarCorSel()&&(S.tool==="eraser"||S.tool==="hand"||S.tool==="corr"))ferramenta("pen")});
-  function aplicarCorSel(){const o=S.sel;if(!o)return false;
+  function aplicarCorSel(){
+    if(S.grp){S.grp.strokes.forEach(st=>{if(st.tool!=="corr")st.cor=S.cor});S.grp.objs.forEach(o=>{if(o.k==="forma"||o.k==="texto")o.cor=S.cor;else if(o.eq){o.cor=S.cor;equacaoImg(o.eq,o.cor).then(r=>{o.img=r.img;sujo=true})}});sujo=true;return true}
+    const o=S.sel;if(!o)return false;
     if(o.k==="forma"||o.k==="texto"){o.cor=S.cor;sujo=true;return true}
     if(o.eq){o.cor=S.cor;equacaoImg(o.eq,o.cor).then(r=>{o.img=r.img;sujo=true});return true}
     return false}
@@ -468,6 +539,7 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
   $("inserir").addEventListener("change",e=>{const v=e.target.value;e.target.value="";if(!v)return;if(v==="imagem"){$("imgArq").click();return}if(v==="equacao"){abrirEq(null);return}inserirForma(v)});
   $("imgArq").addEventListener("change",e=>{inserirImagem(e.target.files[0]);e.target.value=""});
   $("bExcluir").addEventListener("click",excluir);
+  $("girar").addEventListener("change",e=>{const v=e.target.value;e.target.value="";e.target.blur();if(v)girarMenu(v)});
   $("bEq").addEventListener("click",()=>abrirEq(null));
   $("bFill").addEventListener("click",()=>{S.fill=!S.fill;$("bFill").setAttribute("aria-pressed",S.fill);if(S.sel&&S.sel.k==="forma"){S.sel.fill=S.fill;sujo=true}});
   $("fundo").addEventListener("change",e=>{S.fundo=e.target.value;sujo=true});
@@ -482,16 +554,18 @@ html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,
     const k=e.key.toLowerCase();
     if((e.ctrlKey||e.metaKey)&&k==="z"){e.preventDefault();desfazer();return}
     if(e.ctrlKey||e.metaKey||e.altKey)return;
-    if((k==="delete"||k==="backspace")&&S.sel){e.preventDefault();excluir();return}
+    if((k==="delete"||k==="backspace")&&(S.sel||S.grp)){e.preventDefault();excluir();return}
     if(k==="escape"){fecharModais();return}
     if(document.querySelector(".modal.on"))return;
-    const m={t:()=>ferramenta(S.tool==="hand"?ultimaEscrita:"hand"),r:()=>ferramenta("reta"),v:()=>ferramenta("vetor"),x:()=>ferramenta("texto"),p:()=>ferramenta("pen"),h:()=>ferramenta("hl"),c:()=>ferramenta("corr"),e:()=>ferramenta("eraser"),m:()=>ferramenta("hand"),
+    const m={t:()=>ferramenta(S.tool==="hand"?ultimaEscrita:"hand"),g:()=>ferramenta("sel"),r:()=>ferramenta("reta"),v:()=>ferramenta("vetor"),x:()=>ferramenta("texto"),p:()=>ferramenta("pen"),h:()=>ferramenta("hl"),c:()=>ferramenta("corr"),e:()=>ferramenta("eraser"),m:()=>ferramenta("hand"),
       a:()=>modo("aula"),q:()=>modo("quadro"),l:limpar,n:()=>{modo("quadro");nova()},s:salvar,f:()=>$("bTela").click(),
       home:()=>{if(S.modo==="quadro"){camada().qy=0;sujo=true}},
       "1":()=>document.querySelectorAll(".cor")[0].click(),"2":()=>document.querySelectorAll(".cor")[1].click(),"3":()=>document.querySelectorAll(".cor")[2].click(),"4":()=>document.querySelectorAll(".cor")[3].click(),"5":()=>document.querySelectorAll(".cor")[4].click()};
     if(m[k]){e.preventDefault();m[k]()}
   }
   document.addEventListener("keydown",tecla);
+  // depois de usar um menu, devolve o foco à página (para o botão da caneta continuar funcionando)
+  document.querySelectorAll(".bar select").forEach(el=>el.addEventListener("change",()=>setTimeout(()=>el.blur(),0)));
   function ligarNaAula(){try{const d=fr.contentWindow.document;d.addEventListener("keydown",tecla);d.addEventListener("paste",colar);d.documentElement.style.colorScheme="light";d.documentElement.setAttribute("data-theme","light")}catch(e){}}
   fr.addEventListener("load",()=>{ligarNaAula();setTimeout(ligarNaAula,1500);setTimeout(ligarNaAula,5000)});
   setInterval(ligarNaAula,4000);
