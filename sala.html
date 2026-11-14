@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Sala de aula</title>
+<style>
+/* SALA DE AULA — página do professor para usar durante o Meet.
+   Setores: barra de ferramentas (em cima) e palco (aula ou quadro).
+   Compartilhe ESTA aba no Meet e use a mesa digitalizadora por cima da aula. */
+:root{--bar:#16213a;--bar2:#22304f;--ink:#e8edf7;--soft:#9aa6bf;--on:#2451c7;--red:#d62828}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;height:100%;overflow:hidden;font:15px/1.3 system-ui,Segoe UI,sans-serif;background:#0d1422}
+.app{display:flex;flex-direction:column;height:100%}
+.bar{background:var(--bar);color:var(--ink);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:6px 10px;border-bottom:1px solid #000}
+.grp{display:flex;gap:4px;align-items:center}
+.grp+.grp{padding-left:14px;border-left:1px solid var(--bar2)}
+.bar button,.bar select{min-height:40px;padding:0 12px;border-radius:8px;border:1px solid var(--bar2);background:var(--bar2);color:var(--ink);font:600 14px system-ui,sans-serif;cursor:pointer;white-space:nowrap}
+.bar select{max-width:280px}
+.bar button[aria-pressed=true]{background:var(--ink);color:var(--bar);border-color:var(--ink)}
+.bar button:disabled{opacity:.35;cursor:default}
+.bar button:focus-visible,.bar select:focus-visible{outline:3px solid #7ea2ff;outline-offset:1px}
+.cor{width:32px;min-width:32px;padding:0!important;border-radius:50%!important;border:3px solid var(--bar2)!important}
+.cor[aria-pressed=true]{outline:3px solid #fff;outline-offset:1px}
+.esp{width:40px;padding:0!important;display:grid;place-items:center}
+.esp i{display:block;border-radius:50%;background:currentColor}
+.pg{color:var(--soft);font-weight:600;min-width:52px;text-align:center}
+.so-quadro{display:none}
+.quadro .so-quadro{display:flex}
+.stage{position:relative;flex:1;background:#fff;overflow:hidden}
+.stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.quadro .stage iframe,.quadro .vazio{display:none}
+.mao canvas{pointer-events:none}
+.vazio{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#55607a;padding:24px;background:#fbfcff}
+.vazio b{display:block;font-size:22px;color:#16213a;margin-bottom:6px}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#16213a;color:#fff;padding:10px 16px;border-radius:10px;font-weight:600;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="bar" role="toolbar" aria-label="Ferramentas da sala de aula">
+    <!-- SETOR 1: o que mostrar -->
+    <div class="grp">
+      <select id="sel" aria-label="Escolher aula"></select>
+      <input type="file" id="local" accept=".html,.htm,.pdf" hidden>
+      <button id="bAula" aria-pressed="true" title="Mostrar a aula (A)">Aula</button>
+      <button id="bQuadro" aria-pressed="false" title="Mostrar o quadro (Q)">Quadro</button>
+    </div>
+    <!-- SETOR 2: ferramentas -->
+    <div class="grp">
+      <button data-t="hand" aria-pressed="false" title="Clicar e rolar a aula (M)">Mouse</button>
+      <button data-t="pen" aria-pressed="true" title="Caneta (P)">Caneta</button>
+      <button data-t="hl" aria-pressed="false" title="Marca-texto (H)">Marca-texto</button>
+      <button data-t="eraser" aria-pressed="false" title="Borracha (E)">Borracha</button>
+    </div>
+    <!-- SETOR 3: cor e espessura -->
+    <div class="grp" id="cores"></div>
+    <div class="grp" id="esps"></div>
+    <!-- SETOR 4: corrigir -->
+    <div class="grp">
+      <button id="bUndo" title="Desfazer (Ctrl+Z)">Desfazer</button>
+      <button id="bLimpar" title="Apagar tudo desta tela (L)">Limpar</button>
+    </div>
+    <!-- SETOR 5: só no quadro -->
+    <div class="grp so-quadro">
+      <select id="fundo" aria-label="Fundo do quadro"><option value="quad">Quadriculado</option><option value="pauta">Pautado</option><option value="branco">Branco</option></select>
+      <button id="bAnt" title="Página anterior">◀</button><span class="pg" id="pg">1 / 1</span><button id="bProx" title="Próxima página">▶</button>
+      <button id="bNova" title="Nova página (N)">+ Página</button>
+      <button id="bSalvar" title="Salvar esta página como imagem (S)">Salvar imagem</button>
+    </div>
+    <div class="grp"><button id="bTela" title="Tela cheia (F)">Tela cheia</button></div>
+  </div>
+  <div class="stage" id="stage">
+    <iframe id="fr" title="Aula"></iframe>
+    <div class="vazio" id="vazio"><div><b>Escolha uma aula no menu acima</b>ou clique em “Quadro” para escrever numa folha.</div></div>
+    <canvas id="cv"></canvas>
+  </div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="aulas.js"></script>
+<script>
+{
+  const $=id=>document.getElementById(id);
+  const app=$("app"),stage=$("stage"),fr=$("fr"),cv=$("cv"),ctx=cv.getContext("2d");
+  const CORES=[["#16213a","Preto"],["#2451c7","Azul"],["#d62828","Vermelho"],["#0d7a6f","Verde"],["#f2b705","Amarelo"]];
+  const ESPS=[[2,"Fina"],[4,"Média"],[8,"Grossa"]];
+  const S={modo:"aula",tool:"pen",cor:CORES[0][0],esp:4,aula:"",ann:{},pages:[{strokes:[],undo:[]}],page:0,fundo:"quad",sx:0,sy:0};
+  let atual=null,erasing=null,sujo=true;
+
+  // ---------- montar menus ----------
+  const NOMES={matematica:"Matemática",fisica:"Física",quimica:"Química"};
+  const grupos=[["Aulas",typeof AULAS!=="undefined"?AULAS:[]],["Questões",typeof QUESTOES!=="undefined"?QUESTOES:[]]];
+  let h='<option value="">— Escolha a aula —</option>';
+  grupos.forEach(([g,l])=>["matematica","fisica","quimica"].forEach(d=>{
+    const it=l.filter(a=>a.disciplina===d);if(!it.length)return;
+    h+=`<optgroup label="${g} · ${NOMES[d]}">`+it.map(a=>`<option value="${a.arquivo.replace(/"/g,"&quot;")}">${a.titulo.replace(/</g,"&lt;")}${a.protegida?" (senha)":""}</option>`).join("")+"</optgroup>";
+  }));
+  h+='<option value="__local">Abrir arquivo do computador…</option>';
+  $("sel").innerHTML=h;
+  $("cores").innerHTML=CORES.map(([c,n],i)=>`<button class="cor" data-c="${c}" style="background:${c}" aria-label="${n}" title="${n}" aria-pressed="${i===0}"></button>`).join("");
+  $("esps").innerHTML=ESPS.map(([e,n])=>`<button class="esp" data-e="${e}" aria-label="${n}" title="${n}" aria-pressed="${e===S.esp}"><i style="width:${e+3}px;height:${e+3}px"></i></button>`).join("");
+
+  // ---------- camada atual (anotações da aula ou página do quadro) ----------
+  const camada=()=>{if(S.modo==="quadro")return S.pages[S.page];return S.ann[S.aula]||(S.ann[S.aula]={strokes:[],undo:[]})};
+  const off=()=>S.modo==="aula"?[S.sx,S.sy]:[0,0];
+
+  // ---------- tamanho do canvas ----------
+  let W=0,H=0,dpr=1;
+  function medir(){dpr=window.devicePixelRatio||1;W=stage.clientWidth;H=stage.clientHeight;cv.width=W*dpr;cv.height=H*dpr;sujo=true}
+  new ResizeObserver(medir).observe(stage);
+
+  // ---------- desenho ----------
+  function fundo(){
+    ctx.fillStyle="#fff";ctx.fillRect(0,0,W,H);
+    if(S.fundo==="branco")return;
+    ctx.lineWidth=1;
+    if(S.fundo==="quad"){
+      for(let x=0;x<=W;x+=25){ctx.strokeStyle=x%125?"#e3e9f5":"#c9d5ec";ctx.beginPath();ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,H);ctx.stroke()}
+      for(let y=0;y<=H;y+=25){ctx.strokeStyle=y%125?"#e3e9f5":"#c9d5ec";ctx.beginPath();ctx.moveTo(0,y+.5);ctx.lineTo(W,y+.5);ctx.stroke()}
+    }else{
+      ctx.strokeStyle="#cfdcf0";for(let y=60;y<=H;y+=36){ctx.beginPath();ctx.moveTo(0,y+.5);ctx.lineTo(W,y+.5);ctx.stroke()}
+      ctx.strokeStyle="#f3b4b4";ctx.beginPath();ctx.moveTo(70.5,0);ctx.lineTo(70.5,H);ctx.stroke();
+    }
+  }
+  const larg=(s,p)=>s.tool==="hl"?s.esp*5:s.esp*(s.pen?0.35+1.3*p:1);
+  function traco(s,ox,oy){
+    const P=s.pts;if(!P.length)return;
+    ctx.save();ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle=s.cor;ctx.fillStyle=s.cor;
+    if(s.tool==="hl"){ctx.globalAlpha=.35;ctx.globalCompositeOperation="multiply"}
+    const X=i=>P[i][0]-ox,Y=i=>P[i][1]-oy;
+    if(P.length===1){ctx.beginPath();ctx.arc(X(0),Y(0),larg(s,P[0][2])/2,0,7);ctx.fill();ctx.restore();return}
+    if(s.tool==="hl"||!s.pen){
+      ctx.lineWidth=larg(s,.5);ctx.beginPath();ctx.moveTo(X(0),Y(0));
+      for(let i=1;i<P.length-1;i++)ctx.quadraticCurveTo(X(i),Y(i),(X(i)+X(i+1))/2,(Y(i)+Y(i+1))/2);
+      ctx.lineTo(X(P.length-1),Y(P.length-1));ctx.stroke();
+    }else{
+      let mx=X(0),my=Y(0);
+      for(let i=1;i<P.length;i++){
+        const nx=i<P.length-1?(X(i)+X(i+1))/2:X(i),ny=i<P.length-1?(Y(i)+Y(i+1))/2:Y(i);
+        ctx.lineWidth=larg(s,P[i][2]);ctx.beginPath();ctx.moveTo(mx,my);ctx.quadraticCurveTo(X(i),Y(i),nx,ny);ctx.stroke();mx=nx;my=ny;
+      }
+    }
+    ctx.restore();
+  }
+  function desenhar(alvo,c,w,h){
+    c.setTransform(dpr,0,0,dpr,0,0);
+    if(S.modo==="quadro")fundo();else c.clearRect(0,0,w,h);
+    const [ox,oy]=off();camada().strokes.forEach(s=>traco(s,ox,oy));if(atual)traco(atual,ox,oy);
+  }
+  function loop(){
+    if(S.modo==="aula"){let x=0,y=0;try{x=fr.contentWindow.scrollX;y=fr.contentWindow.scrollY}catch(e){}if(x!==S.sx||y!==S.sy){S.sx=x;S.sy=y;sujo=true}}
+    if(sujo){sujo=false;desenhar(cv,ctx,W,H)}
+    requestAnimationFrame(loop);
+  }
+
+  // ---------- caneta ----------
+  const ponto=e=>{const r=cv.getBoundingClientRect(),[ox,oy]=off();return [e.clientX-r.left+ox,e.clientY-r.top+oy,e.pressure||.5]};
+  cv.addEventListener("pointerdown",e=>{
+    if(S.tool==="hand")return;
+    cv.setPointerCapture(e.pointerId);
+    const borr=S.tool==="eraser"||(e.buttons&32)||e.button===5;
+    if(borr){erasing=[];apagar(ponto(e));return}
+    atual={tool:S.tool,cor:S.cor,esp:S.esp,pen:e.pointerType==="pen",pts:[ponto(e)]};sujo=true;
+  });
+  cv.addEventListener("pointermove",e=>{
+    if(erasing){apagar(ponto(e));return}
+    if(!atual)return;
+    const ev=e.getCoalescedEvents?e.getCoalescedEvents():[e];
+    (ev.length?ev:[e]).forEach(k=>atual.pts.push(ponto(k)));sujo=true;
+  });
+  const fim=()=>{
+    if(erasing){if(erasing.length)camada().undo.push({tipo:"apagou",itens:erasing});erasing=null;return}
+    if(atual){const c=camada();c.strokes.push(atual);c.undo.push({tipo:"traco",s:atual});atual=null;sujo=true}
+  };
+  cv.addEventListener("pointerup",fim);cv.addEventListener("pointercancel",fim);
+  function apagar(p){
+    const c=camada(),r=12+S.esp*2;
+    c.strokes=c.strokes.filter(s=>{const hit=s.pts.some(q=>Math.hypot(q[0]-p[0],q[1]-p[1])<r);if(hit)erasing.push(s);return !hit});sujo=true;
+  }
+  // rolar a aula com a rodinha mesmo com a caneta ativa
+  cv.addEventListener("wheel",e=>{if(S.modo==="aula"){try{fr.contentWindow.scrollBy(e.deltaX,e.deltaY);e.preventDefault()}catch(x){}}},{passive:false});
+
+  // ---------- ações ----------
+  function desfazer(){
+    const c=camada(),u=c.undo.pop();if(!u)return;
+    if(u.tipo==="traco")c.strokes=c.strokes.filter(s=>s!==u.s);
+    else if(u.tipo==="apagou")c.strokes.push(...u.itens);
+    else if(u.tipo==="limpou")c.strokes=u.itens;
+    sujo=true;
+  }
+  function limpar(){const c=camada();if(!c.strokes.length)return;c.undo.push({tipo:"limpou",itens:c.strokes});c.strokes=[];sujo=true;aviso("Tela limpa — Desfazer traz de volta")}
+  function ferramenta(t){S.tool=t;document.querySelectorAll("[data-t]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));app.classList.toggle("mao",t==="hand")}
+  function modo(m){
+    S.modo=m;app.classList.toggle("quadro",m==="quadro");
+    $("bAula").setAttribute("aria-pressed",m==="aula");$("bQuadro").setAttribute("aria-pressed",m==="quadro");
+    if(m==="quadro"&&S.tool==="hand")ferramenta("pen");
+    pagina();sujo=true;
+  }
+  function pagina(){$("pg").textContent=(S.page+1)+" / "+S.pages.length;$("bAnt").disabled=S.page===0;$("bProx").disabled=S.page===S.pages.length-1}
+  function nova(){S.pages.push({strokes:[],undo:[]});S.page=S.pages.length-1;pagina();sujo=true}
+  function salvar(){
+    if(S.modo!=="quadro")return;
+    const a=document.createElement("a");const d=new Date();
+    a.download=`quadro_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}_pag${S.page+1}.png`;
+    a.href=cv.toDataURL("image/png");document.body.appendChild(a);a.click();a.remove();aviso("Imagem salva na pasta Downloads");
+  }
+  function abrir(url){S.aula=url;fr.src=url;$("vazio").style.display=url?"none":"";S.sx=S.sy=0;modo("aula");if(S.tool==="pen"||S.tool==="hl")ferramenta("hand");
+    aviso(url?"Aula aberta. Use Mouse para clicar na aula e Caneta para escrever.":"")}
+  let tt;function aviso(t){if(!t)return;const e=$("toast");e.textContent=t;e.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>e.classList.remove("on"),2600)}
+
+  // ---------- botões ----------
+  $("sel").addEventListener("change",e=>{const v=e.target.value;if(v==="__local"){$("local").click();return}abrir(v)});
+  $("local").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;
+    const url=URL.createObjectURL(f.name.toLowerCase().endsWith(".pdf")?new Blob([f],{type:"application/pdf"}):new Blob([f],{type:"text/html"}));
+    abrir(url);});
+  $("bAula").addEventListener("click",()=>modo("aula"));
+  $("bQuadro").addEventListener("click",()=>modo("quadro"));
+  document.querySelectorAll("[data-t]").forEach(b=>b.addEventListener("click",()=>ferramenta(b.dataset.t)));
+  document.querySelectorAll(".cor").forEach(b=>b.addEventListener("click",()=>{S.cor=b.dataset.c;document.querySelectorAll(".cor").forEach(x=>x.setAttribute("aria-pressed",x===b));if(S.tool==="eraser"||S.tool==="hand")ferramenta("pen")}));
+  document.querySelectorAll(".esp").forEach(b=>b.addEventListener("click",()=>{S.esp=+b.dataset.e;document.querySelectorAll(".esp").forEach(x=>x.setAttribute("aria-pressed",x===b))}));
+  $("bUndo").addEventListener("click",desfazer);$("bLimpar").addEventListener("click",limpar);
+  $("fundo").addEventListener("change",e=>{S.fundo=e.target.value;sujo=true});
+  $("bAnt").addEventListener("click",()=>{if(S.page>0){S.page--;pagina();sujo=true}});
+  $("bProx").addEventListener("click",()=>{if(S.page<S.pages.length-1){S.page++;pagina();sujo=true}});
+  $("bNova").addEventListener("click",nova);$("bSalvar").addEventListener("click",salvar);
+  $("bTela").addEventListener("click",()=>{try{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}catch(e){}});
+
+  // ---------- atalhos (servem também para as teclas da mesa Wacom) ----------
+  function tecla(e){
+    if(e.target&&(e.target.tagName==="INPUT"||e.target.tagName==="SELECT"||e.target.tagName==="TEXTAREA"))return;
+    const k=e.key.toLowerCase();
+    if((e.ctrlKey||e.metaKey)&&k==="z"){e.preventDefault();desfazer();return}
+    if(e.ctrlKey||e.metaKey||e.altKey)return;
+    const m={p:()=>ferramenta("pen"),h:()=>ferramenta("hl"),e:()=>ferramenta("eraser"),m:()=>ferramenta("hand"),a:()=>modo("aula"),q:()=>modo("quadro"),l:limpar,n:()=>{modo("quadro");nova()},s:salvar,f:()=>$("bTela").click(),
+      "1":()=>document.querySelectorAll(".cor")[0].click(),"2":()=>document.querySelectorAll(".cor")[1].click(),"3":()=>document.querySelectorAll(".cor")[2].click(),"4":()=>document.querySelectorAll(".cor")[3].click(),"5":()=>document.querySelectorAll(".cor")[4].click()};
+    if(m[k]){e.preventDefault();m[k]()}
+  }
+  document.addEventListener("keydown",tecla);
+  // quando o foco está dentro da aula, os atalhos continuam funcionando
+  function ligarTeclasNaAula(){try{fr.contentWindow.document.addEventListener("keydown",tecla)}catch(e){}}
+  fr.addEventListener("load",()=>{ligarTeclasNaAula();setTimeout(ligarTeclasNaAula,1500);setTimeout(ligarTeclasNaAula,5000)});
+  setInterval(ligarTeclasNaAula,4000);
+
+  window.addEventListener("beforeunload",e=>{if(S.pages.some(p=>p.strokes.length)){e.preventDefault();e.returnValue=""}});
+
+  medir();pagina();loop();
+}
+</script>
+</body>
+</html>
