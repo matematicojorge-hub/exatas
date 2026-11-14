@@ -21,7 +21,7 @@
   --grid:light-dark(#dfe7f5,#1b2740);--grid2:light-dark(#c4d2ec,#24345a);--card:light-dark(#ffffff,#121b2e);
   --line:light-dark(#d5ddeb,#2a3756);--red:light-dark(#d62828,#ff6b6b);
   --mat:light-dark(#2451c7,#7ea2ff);--fis:light-dark(#d62828,#ff7a7a);--qui:light-dark(#0d7a6f,#4fd1c0);
-  --on:light-dark(#fff,#0d1422);--band:light-dark(#16213a,#e8edf7);--bandink:light-dark(#fbfcff,#0d1422)}
+  --on:light-dark(#fff,#0d1422);--green:#0b7a37;--green2:#e7f4ec;--band:light-dark(#16213a,#e8edf7);--bandink:light-dark(#fbfcff,#0d1422)}
 :root,:root[data-theme=light],:root[data-theme=dark]{color-scheme:light}
 *{box-sizing:border-box;min-width:0}
 html{scroll-behavior:smooth}
@@ -38,7 +38,7 @@ h1{font-size:clamp(34px,5vw,52px)}h2{font-size:clamp(28px,3.4vw,38px)}h3{font-si
 .hand{font-family:Caveat,cursive;font-weight:700}
 .lead{font-size:17px;color:var(--soft);max-width:60ch}
 .btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);background:var(--card);color:var(--ink);font-size:16px;cursor:pointer}
-.btn.main{background:var(--red);border-color:var(--red);color:var(--on)}
+.btn.main{background:var(--green);border-color:var(--green);color:#fff}
 .btn:hover{transform:translateY(-1px)}
 :focus-visible{outline:3px solid var(--mat);outline-offset:3px}
 /* menu */
@@ -50,7 +50,23 @@ nav a.it{text-decoration:none;font-weight:600;color:var(--soft);padding:8px 0}
 nav a.it:hover{color:var(--ink)}
 /* topo */
 .hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center}
-.hero .who{font-size:28px;color:var(--red);margin:0 0 6px}
+.hero .who{font-size:34px;color:var(--green);margin:0;line-height:1.1}
+.topo-contato{display:flex;flex-wrap:wrap;gap:4px 16px;margin:4px 0 18px;font-size:15px;color:var(--soft)}
+.topo-contato a{text-decoration:none;color:var(--ink);font-weight:600}
+.topo-contato a:hover{color:var(--green)}
+.esfera{width:100%;max-width:520px;aspect-ratio:1;display:block;margin:0 auto;border-radius:50%;filter:drop-shadow(0 22px 30px rgba(22,33,58,.28))}
+.flag{height:32px;width:auto;display:block;border-radius:3px;box-shadow:0 0 0 1px var(--line)}
+.lema{background:var(--green);color:#fff;text-align:center;padding:clamp(22px,3.5vw,40px) max(5vw,16px)}
+.lema p{margin:0 auto;max-width:1100px;font-family:Archivo,sans-serif;font-stretch:118%;font-weight:800;font-size:clamp(22px,3.6vw,42px);line-height:1.12;text-wrap:balance}
+.lema span{display:block;margin-top:8px;font-size:24px;opacity:.9}
+.atende{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:22px}
+.grupo{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+.grupo h4{margin:0 0 12px;font-size:17px;font-stretch:110%}
+.grupo ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.grupo li{display:flex;gap:10px;align-items:center;font-weight:600}
+.grupo li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--green);flex:none}
+@media(max-width:860px){.atende{grid-template-columns:1fr}.flag.br{order:1;margin-left:auto}.logo{margin-right:0}nav{column-gap:12px}.quebra{display:block;order:2;flex-basis:100%;height:0}nav a.it{order:3}}
+.quebra{display:none}
 .hero p{margin:18px 0 26px}
 .acts{display:flex;flex-wrap:wrap;gap:12px}
 .board{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 40px -22px rgba(22,33,58,.45);padding:10px;aspect-ratio:5/4}
@@ -129,6 +145,7 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
 <body>
 <header>
   <nav aria-label="Menu principal">
+    <img class="flag" src="img/bandeira-brasil.png" alt="Bandeira do Brasil" width="40" height="26">
     <a class="logo" href="#inicio"><svg viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="28" height="28" rx="7" fill="var(--ink)"/><path d="M7 20 Q11 6 15 15 T23 10" fill="none" stroke="var(--red)" stroke-width="2.6" stroke-linecap="round"/></svg>Exatas Particulares</a>
     <a class="it" href="#como">Como funciona</a>
     <a class="it" href="#curriculo">Currículo</a>
@@ -136,6 +153,8 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
     <a class="it" href="#aulas">Aulas</a>
     <a class="it" href="#questoes">Questões</a>
     <a class="it" href="#contato">Contato</a>
+    <span class="quebra" aria-hidden="true"></span>
+    <img class="flag br" src="img/bandeira-ceara.png" alt="Bandeira do Ceará" width="38" height="26">
   </nav>
 </header>
 
@@ -145,6 +164,7 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
   <div class="wrap hero">
     <div>
       <p class="hand who">Prof. Jorge Basílio</p>
+      <p class="topo-contato"><a id="hMail" href="#"></a><a id="hZap" href="#" target="_blank" rel="noopener"></a></p>
       <h1>Aulas particulares on-line de Matemática, Física e Química</h1>
       <p class="lead">Cada conteúdo explicado passo a passo, do mais simples ao mais completo, e todo o material da aula disponível para você revisar quando quiser.</p>
       <div class="acts">
@@ -153,44 +173,12 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
       </div>
       <div class="cred"><span><b>Licenciado em Matemática</b> pela USP</span><span><b>Colégio Militar de Brasília</b> (2012–2021)</span><span>Ex-coordenador de <b>Matemática</b></span><span>Aulas pelo <b>Google Meet</b></span></div>
     </div>
-    <div class="board" aria-label="Quadro com um gráfico de seno, um bloco no plano inclinado e um anel benzênico">
-      <svg viewBox="0 0 500 400" role="img">
-        <defs>
-          <pattern id="g1" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="var(--grid)" stroke-width="1"/></pattern>
-          <pattern id="g2" width="50" height="50" patternUnits="userSpaceOnUse"><rect width="50" height="50" fill="url(#g1)"/><path d="M50 0H0V50" fill="none" stroke="var(--grid2)" stroke-width="1"/></pattern>
-          <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ink)"/></marker>
-          <marker id="arR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--fis)"/></marker>
-        </defs>
-        <rect width="500" height="400" rx="8" fill="url(#g2)"/>
-        <!-- Matemática: gráfico do seno -->
-        <line x1="20" y1="110" x2="480" y2="110" stroke="var(--ink)" stroke-width="1.6" marker-end="url(#ar)"/>
-        <line x1="40" y1="190" x2="40" y2="20" stroke="var(--ink)" stroke-width="1.6" marker-end="url(#ar)"/>
-        <path class="curve" d="M40 110 C70 40 110 40 140 110 S210 180 240 110 S310 40 340 110 S410 180 440 110" fill="none" stroke="var(--mat)" stroke-width="3.5" stroke-linecap="round"/>
-        <text x="300" y="36" class="hand" font-size="26" fill="var(--mat)">y = sen x</text>
-        <text x="132" y="132" font-size="14" fill="var(--soft)" font-family="Archivo">π</text>
-        <text x="226" y="132" font-size="14" fill="var(--soft)" font-family="Archivo">2π</text>
-        <!-- Física: plano inclinado -->
-        <path d="M30 370 L280 370 L280 230 Z" fill="color-mix(in srgb,var(--fis) 12%,var(--card))" stroke="var(--ink)" stroke-width="2"/>
-        <g transform="translate(160 302) rotate(-29.25)">
-          <rect x="-28" y="-40" width="56" height="40" rx="4" fill="var(--fis)"/>
-          <rect x="-28" y="-40" width="56" height="8" rx="4" fill="#fff" opacity=".25"/>
-        </g>
-        <line x1="150" y1="285" x2="150" y2="355" stroke="var(--fis)" stroke-width="3" marker-end="url(#arR)"/>
-        <text x="156" y="352" class="hand" font-size="24" fill="var(--fis)">P</text>
-        <line x1="150" y1="285" x2="118" y2="228" stroke="var(--ink)" stroke-width="2.4" marker-end="url(#ar)"/>
-        <text x="96" y="232" class="hand" font-size="24" fill="var(--ink)">N</text>
-        <path d="M70 370 A40 40 0 0 0 66 350" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
-        <text x="76" y="360" font-size="15" fill="var(--ink)" font-family="Archivo">θ</text>
-        <!-- Química: anel benzênico -->
-        <g transform="translate(395 285)" stroke="var(--qui)" stroke-width="3" fill="none" stroke-linejoin="round">
-          <polygon points="0,-58 50,-29 50,29 0,58 -50,29 -50,-29" fill="color-mix(in srgb,var(--qui) 10%,var(--card))"/>
-          <circle r="30"/>
-        </g>
-        <text x="345" y="380" class="hand" font-size="24" fill="var(--qui)">benzeno</text>
-      </svg>
-    </div>
+    <img class="esfera" src="img/esfera.webp" alt="Esfera com fórmulas de Matemática, Química e Física" width="520" height="520">
   </div>
 </section>
+
+<!-- ===== LEMA ===== -->
+<section class="lema" aria-label="Lema"><p>ESTUDAR É BÁSICO, APRENDER É FUNDAMENTAL<span class="hand">Prof. Jorge Basílio</span></p></section>
 
 <!-- ===== SETOR 2: COMO FUNCIONA ===== -->
 <section class="band" id="como">
@@ -257,6 +245,12 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
       <div class="d mat"><h3>Matemática</h3><p>Funções, trigonometria, geometria plana e analítica, vetores.</p><div class="row" data-d="matematica"></div></div>
       <div class="d fis"><h3>Física</h3><p>Cinemática, vetores, dinâmica, termodinâmica e laboratórios animados.</p><div class="row" data-d="fisica"></div></div>
       <div class="d qui"><h3>Química</h3><p>Química orgânica com listas comentadas questão a questão.</p><div class="row" data-d="quimica"></div></div>
+    </div>
+    <h3 style="margin-top:40px">Atendimento</h3>
+    <div class="atende">
+      <div class="grupo"><h4>Níveis de ensino</h4><ul><li>Ensino Fundamental</li><li>Ensino Médio</li></ul></div>
+      <div class="grupo"><h4>Matérias específicas</h4><ul><li>Cálculo</li><li>Estatística</li><li>Raciocínio Lógico</li><li>Matemática Financeira</li></ul></div>
+      <div class="grupo"><h4>Preparatórios</h4><ul><li>Vestibulares</li><li>ENEM</li><li>Concursos Militares</li></ul></div>
     </div>
   </div>
 </section>
@@ -329,6 +323,8 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
   $("#btnMeet").href=cfg.meet||"#";$("#cMeet").href=cfg.meet||"#";
   $("#cWhats").href="https://wa.me/"+(cfg.whatsapp||"")+"?text="+encodeURIComponent("Olá, professor! Gostaria de informações sobre as aulas.");
   $("#tWhats").textContent=cfg.whatsappTexto||"";
+  $("#hMail").href="mailto:"+(cfg.email||"");$("#hMail").textContent=cfg.email||"";
+  $("#hZap").href=$("#cWhats").href;$("#hZap").textContent=cfg.whatsappTexto||"";
   $("#cMail").href="mailto:"+(cfg.email||"");$("#tMail").textContent=cfg.email||"";
   $("#ano").textContent=new Date().getFullYear();
 
