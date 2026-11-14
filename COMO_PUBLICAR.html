@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Como publicar o site</title>
+<style>body{font:17px/1.6 system-ui,sans-serif;max-width:820px;margin:0 auto;padding:28px 18px;color:#16213a}h1{font-size:30px}h2{margin-top:36px;border-bottom:3px solid #2451c7;padding-bottom:4px}code{background:#eef2fb;padding:1px 6px;border-radius:4px}ol li{margin:8px 0}.box{background:#fff8e1;border-left:5px solid #d62828;padding:12px 16px;border-radius:6px}</style></head><body>
+<h1>Como publicar o site Exatas Particulares</h1>
+<div class="box"><b>Por que não dá para usar só o Google Drive?</b> O Drive não abre mais arquivos .html como página — ele mostra o código ou baixa o arquivo. Por isso as aulas precisam ficar num lugar que "sirva" páginas. O GitHub Pages faz isso de graça.</div>
+
+<h2>Setor 1 — O que tem na pasta</h2>
+<ul>
+<li><code>index.html</code> — o site (não precisa mexer).</li>
+<li><code>aulas.js</code> — <b>o único arquivo que você edita</b>: link do Meet, links do Drive e a lista de aulas.</li>
+<li><code>aulas/matematica</code>, <code>aulas/fisica</code>, <code>aulas/quimica</code> — onde ficam os HTMLs das aulas.</li>
+</ul>
+
+<h2>Setor 2 — Publicar pela primeira vez (uns 10 minutos)</h2>
+<ol>
+<li>Crie uma conta em <b>github.com</b> (gratuita). O nome de usuário vira o endereço, ex.: <code>jorgebasilio</code>.</li>
+<li>Clique em <b>New repository</b>. Nome: <code>exatas</code>. Marque <b>Public</b>. Clique em <b>Create repository</b>.</li>
+<li>Na página do repositório, clique em <b>uploading an existing file</b> e arraste <b>todo o conteúdo</b> desta pasta (o index.html, o aulas.js e a pasta aulas). Clique em <b>Commit changes</b>.</li>
+<li>Vá em <b>Settings → Pages</b>. Em "Branch", escolha <b>main</b> e <b>/(root)</b>. Clique em <b>Save</b>.</li>
+<li>Em 1 a 2 minutos o site fica no ar em: <code>https://SEU-USUARIO.github.io/exatas/</code></li>
+</ol>
+
+<h2>Setor 3 — Antes de enviar: ajustar o aulas.js</h2>
+<ol>
+<li>Abra o <code>aulas.js</code> no Bloco de Notas (ou VS Code).</li>
+<li>Em <code>meet:</code>, cole o link fixo da sua sala do Google Meet.</li>
+<li>Em <code>drive:</code>, cole os links das pastas do Drive (se quiser manter PDFs lá). Deixe <code>""</code> para esconder o botão.</li>
+<li>Confira se o nome em <code>arquivo:</code> é <b>exatamente</b> o nome do seu HTML (maiúsculas, acentos e espaços contam). Dica: evite acentos e espaços nos nomes de arquivo.</li>
+</ol>
+
+<h2>Setor 4 — Adicionar uma aula nova (rotina)</h2>
+<ol>
+<li>No GitHub, entre na pasta da disciplina (ex.: <code>aulas/fisica</code>) → <b>Add file → Upload files</b> → arraste o HTML → <b>Commit changes</b>.</li>
+<li>Abra o <code>aulas.js</code> no GitHub → ícone do lápis → copie um bloco <code>{ ... },</code>, cole no fim da lista e troque título, disciplina, assunto, descrição e arquivo → <b>Commit changes</b>.</li>
+<li>Em 1 minuto a aula aparece no site. Se o arquivo não foi enviado, o card mostra "em breve" sozinho.</li>
+</ol>
+<p>Se a aula usar imagens separadas (arquivos .png), envie as imagens para a mesma pasta do HTML.</p>
+
+<h2>Setor 5 — E o Google Sites?</h2>
+<p>Você pode escolher um dos dois caminhos:</p>
+<ul>
+<li><b>A) Usar o site novo como principal</b> e mandar aos alunos o endereço do GitHub Pages. No Google Sites, deixe só um botão "Acessar o novo site".</li>
+<li><b>B) Manter o endereço do Google Sites</b>: no editor do Sites, <b>Inserir → Incorporar → Por URL</b>, cole <code>https://SEU-USUARIO.github.io/exatas/</code> e estique o bloco para ocupar a página toda. Os alunos continuam entrando pelo endereço antigo.</li>
+</ul>
+
+<h2>Setor 6 — Atenção</h2>
+<ul>
+<li>No GitHub Pages gratuito, <b>qualquer pessoa com o link</b> consegue ver as aulas. Não coloque material que precise ficar restrito a alunos pagantes.</li>
+<li>Para testar no seu computador antes de enviar, basta abrir o <code>index.html</code> com dois cliques.</li>
+</ul>
+</body></html>

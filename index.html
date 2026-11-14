@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exatas Particulares</title>
+<meta name="description" content="Aulas particulares on-line de Matemática, Física e Química com o Prof. Jorge Basílio, licenciado em Matemática pela USP.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: professor confiável, claro e organizado — um caderno bem cuidado.
+   IDEA: a página é uma folha de papel milimetrado de um caderno de exatas.
+   PICTURE: no topo, um quadro em papel milimetrado com um gráfico de seno (Matemática),
+            um bloco no plano inclinado com vetores (Física) e um anel benzênico (Química), anotados à mão.
+   COLOUR/TYPE: papel branco, tinta azul-escura, caneta vermelha de correção; cada disciplina com sua cor.
+                Archivo largo para títulos, Archivo para texto, Caveat para as anotações à mão.
+   LAYOUT: setorizado — menu, apresentação, como funciona, disciplinas, banco de aulas, contato. */
+:root{color-scheme:light dark;
+  --bg:light-dark(#fbfcff,#0d1422);--ink:light-dark(#16213a,#e8edf7);--soft:light-dark(#55607a,#9aa6bf);
+  --grid:light-dark(#dfe7f5,#1b2740);--grid2:light-dark(#c4d2ec,#24345a);--card:light-dark(#ffffff,#121b2e);
+  --line:light-dark(#d5ddeb,#2a3756);--red:light-dark(#d62828,#ff6b6b);
+  --mat:light-dark(#2451c7,#7ea2ff);--fis:light-dark(#d62828,#ff7a7a);--qui:light-dark(#0d7a6f,#4fd1c0);
+  --on:light-dark(#fff,#0d1422);--band:light-dark(#16213a,#e8edf7);--bandink:light-dark(#fbfcff,#0d1422)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Archivo,system-ui,sans-serif;overflow-x:clip}
+a{color:inherit}
+h1,h2,h3{font-family:Archivo,sans-serif;font-stretch:118%;font-weight:800;line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,5vw,52px)}h2{font-size:clamp(28px,3.4vw,38px)}h3{font-size:20px;font-stretch:110%}
+.wrap{max-width:1240px;margin:0 auto}
+.band{padding:clamp(32px,5vw,72px) max(5vw,16px)}
+.paper{background-color:var(--bg);background-image:
+  linear-gradient(var(--grid2) 1px,transparent 1px),linear-gradient(90deg,var(--grid2) 1px,transparent 1px),
+  linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:100px 100px,100px 100px,20px 20px,20px 20px}
+.hand{font-family:Caveat,cursive;font-weight:700}
+.lead{font-size:17px;color:var(--soft);max-width:60ch}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 22px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--ink);background:var(--card);color:var(--ink);font-size:16px;cursor:pointer}
+.btn.main{background:var(--red);border-color:var(--red);color:var(--on)}
+.btn:hover{transform:translateY(-1px)}
+:focus-visible{outline:3px solid var(--mat);outline-offset:3px}
+/* menu */
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;padding:12px max(5vw,16px);max-width:1240px;margin:0 auto}
+.logo{font-weight:800;font-stretch:118%;font-size:19px;text-decoration:none;margin-right:auto;display:flex;align-items:center;gap:10px}
+.logo svg{width:30px;height:30px}
+nav a.it{text-decoration:none;font-weight:600;color:var(--soft);padding:8px 0}
+nav a.it:hover{color:var(--ink)}
+/* topo */
+.hero{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.hero .who{font-size:28px;color:var(--red);margin:0 0 6px}
+.hero p{margin:18px 0 26px}
+.acts{display:flex;flex-wrap:wrap;gap:12px}
+.board{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 40px -22px rgba(22,33,58,.45);padding:10px;aspect-ratio:5/4}
+.board svg{width:100%;height:100%;display:block}
+.cred{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;font-size:14px;color:var(--soft)}
+.cred b{color:var(--ink)}
+/* como funciona */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:28px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px}
+.step .n{font-size:40px;color:var(--red);line-height:1}
+.step p{margin:8px 0 0;color:var(--soft)}
+/* currículo */
+.cv{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:clamp(24px,4vw,48px);margin-top:28px;align-items:start}
+.inst{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;text-align:center;position:sticky;top:84px}
+.inst .lg{background:#fff;border-radius:12px;padding:16px;display:inline-block;margin-bottom:14px}
+.inst img{width:140px;height:auto;display:block}
+.inst .grau{font-weight:800;font-stretch:112%;font-size:19px;line-height:1.2}
+.inst .uni{color:var(--soft);margin:4px 0 16px}
+.inst .btn{width:100%;justify-content:center}
+.cvb h3{margin:0 0 10px}
+.cvb>div{padding:0 0 26px;margin:0 0 26px;border-bottom:1px solid var(--line)}
+.cvb>div:last-child{border:0;margin:0;padding:0}
+.cvb p{margin:0 0 10px;max-width:68ch}
+.tl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 18px;margin:14px 0 4px}
+.tl .yr{font-weight:800;color:var(--red);white-space:nowrap;font-variant-numeric:tabular-nums}
+.tl .rl b{display:block}
+.tl .rl span{color:var(--soft);font-size:15px}
+.areas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.area{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.area b{display:block;margin-bottom:8px}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:14px;background:var(--bg)}
+@media(max-width:860px){.cv{grid-template-columns:1fr}.inst{position:static}.areas{grid-template-columns:1fr}}
+/* disciplinas */
+.disc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:28px}
+.d{border-radius:12px;padding:24px;color:#fff;display:flex;flex-direction:column;gap:10px;min-height:190px;color:var(--on)}
+.d.mat{background:var(--mat)}.d.fis{background:var(--fis)}.d.qui{background:var(--qui)}
+.d p{margin:0;opacity:.92}
+.d .row{margin-top:auto;display:flex;flex-wrap:wrap;gap:8px}
+.d a{font-weight:700;font-size:15px;text-decoration:none;border:2px solid currentColor;border-radius:8px;padding:8px 12px;min-height:44px;display:inline-flex;align-items:center}
+/* banco de aulas */
+.bank{background:var(--card);border-block:1px solid var(--line)}
+.tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:26px 0 18px}
+.search{flex:1 1 260px;display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:10px;padding:0 14px;background:var(--bg);min-height:48px}
+.search:focus-within{border-color:var(--mat)}
+.search input{border:0;outline:0;background:transparent;font:16px Archivo,sans-serif;color:var(--ink);width:100%;min-height:44px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 16px;border-radius:999px;border:2px solid var(--line);background:var(--bg);font:600 15px Archivo,sans-serif;color:var(--ink);cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.count{font-size:14px;color:var(--soft);margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.aula{border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px;background:var(--bg);border-top:5px solid var(--c)}
+.aula .tag{font-size:13px;font-weight:700;color:var(--c)}
+.aula p{margin:0;color:var(--soft);font-size:15px}
+.aula .go{margin-top:auto;padding-top:10px;display:flex;gap:10px;align-items:center}
+.aula .go a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:8px;background:var(--c);color:var(--on);font-weight:700;text-decoration:none}
+.aula.off .go a{background:var(--line);color:var(--soft);pointer-events:none}
+.aula .st{font-size:13px;color:var(--soft)}
+.empty{padding:36px;text-align:center;color:var(--soft);border:2px dashed var(--line);border-radius:12px}
+/* contato */
+.contact{background:var(--band);color:var(--bandink)}
+.contact .lead{color:inherit;opacity:.8}
+.cgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:28px}
+.c{border:1px solid color-mix(in srgb,var(--bandink) 25%,transparent);border-radius:12px;padding:22px;text-decoration:none;display:block}
+.c small{display:block;opacity:.7;font-size:14px}
+.c strong{font-size:19px;overflow-wrap:anywhere}
+footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:center}
+@media(max-width:860px){.hero{grid-template-columns:1fr}.steps,.disc,.cgrid{grid-template-columns:1fr}}
+@media(max-width:600px){nav a.it{font-size:15px}.board{aspect-ratio:auto;height:300px}}
+@media(prefers-reduced-motion:no-preference){.curve{stroke-dasharray:900;stroke-dashoffset:900;animation:draw 2.4s .3s ease-out forwards}@keyframes draw{to{stroke-dashoffset:0}}}
+</style>
+</head>
+<body>
+<header>
+  <nav aria-label="Menu principal">
+    <a class="logo" href="#inicio"><svg viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="28" height="28" rx="7" fill="var(--ink)"/><path d="M7 20 Q11 6 15 15 T23 10" fill="none" stroke="var(--red)" stroke-width="2.6" stroke-linecap="round"/></svg>Exatas Particulares</a>
+    <a class="it" href="#como">Como funciona</a>
+    <a class="it" href="#curriculo">Currículo</a>
+    <a class="it" href="#disciplinas">Disciplinas</a>
+    <a class="it" href="#aulas">Banco de aulas</a>
+    <a class="it" href="#contato">Contato</a>
+  </nav>
+</header>
+
+<main>
+<!-- ===== SETOR 1: APRESENTAÇÃO ===== -->
+<section class="band paper" id="inicio">
+  <div class="wrap hero">
+    <div>
+      <p class="hand who">Prof. Jorge Basílio</p>
+      <h1>Aulas particulares on-line de Matemática, Física e Química</h1>
+      <p class="lead">Cada conteúdo explicado passo a passo, do mais simples ao mais completo, e todo o material da aula disponível para você revisar quando quiser.</p>
+      <div class="acts">
+        <a class="btn main" id="btnMeet" href="#" target="_blank" rel="noopener">Entrar na aula ao vivo</a>
+        <a class="btn" href="#aulas">Ver banco de aulas</a>
+      </div>
+      <div class="cred"><span><b>Licenciado em Matemática</b> pela USP</span><span><b>Colégio Militar de Brasília</b> (2012–2021)</span><span>Ex-coordenador de <b>Matemática</b></span><span>Aulas pelo <b>Google Meet</b></span></div>
+    </div>
+    <div class="board" aria-label="Quadro com um gráfico de seno, um bloco no plano inclinado e um anel benzênico">
+      <svg viewBox="0 0 500 400" role="img">
+        <defs>
+          <pattern id="g1" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="var(--grid)" stroke-width="1"/></pattern>
+          <pattern id="g2" width="50" height="50" patternUnits="userSpaceOnUse"><rect width="50" height="50" fill="url(#g1)"/><path d="M50 0H0V50" fill="none" stroke="var(--grid2)" stroke-width="1"/></pattern>
+          <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ink)"/></marker>
+          <marker id="arR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--fis)"/></marker>
+        </defs>
+        <rect width="500" height="400" rx="8" fill="url(#g2)"/>
+        <!-- Matemática: gráfico do seno -->
+        <line x1="20" y1="110" x2="480" y2="110" stroke="var(--ink)" stroke-width="1.6" marker-end="url(#ar)"/>
+        <line x1="40" y1="190" x2="40" y2="20" stroke="var(--ink)" stroke-width="1.6" marker-end="url(#ar)"/>
+        <path class="curve" d="M40 110 C70 40 110 40 140 110 S210 180 240 110 S310 40 340 110 S410 180 440 110" fill="none" stroke="var(--mat)" stroke-width="3.5" stroke-linecap="round"/>
+        <text x="300" y="36" class="hand" font-size="26" fill="var(--mat)">y = sen x</text>
+        <text x="132" y="132" font-size="14" fill="var(--soft)" font-family="Archivo">π</text>
+        <text x="226" y="132" font-size="14" fill="var(--soft)" font-family="Archivo">2π</text>
+        <!-- Física: plano inclinado -->
+        <path d="M30 370 L280 370 L280 230 Z" fill="color-mix(in srgb,var(--fis) 12%,var(--card))" stroke="var(--ink)" stroke-width="2"/>
+        <g transform="translate(160 302) rotate(-29.25)">
+          <rect x="-28" y="-40" width="56" height="40" rx="4" fill="var(--fis)"/>
+          <rect x="-28" y="-40" width="56" height="8" rx="4" fill="#fff" opacity=".25"/>
+        </g>
+        <line x1="150" y1="285" x2="150" y2="355" stroke="var(--fis)" stroke-width="3" marker-end="url(#arR)"/>
+        <text x="156" y="352" class="hand" font-size="24" fill="var(--fis)">P</text>
+        <line x1="150" y1="285" x2="118" y2="228" stroke="var(--ink)" stroke-width="2.4" marker-end="url(#ar)"/>
+        <text x="96" y="232" class="hand" font-size="24" fill="var(--ink)">N</text>
+        <path d="M70 370 A40 40 0 0 0 66 350" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        <text x="76" y="360" font-size="15" fill="var(--ink)" font-family="Archivo">θ</text>
+        <!-- Química: anel benzênico -->
+        <g transform="translate(395 285)" stroke="var(--qui)" stroke-width="3" fill="none" stroke-linejoin="round">
+          <polygon points="0,-58 50,-29 50,29 0,58 -50,29 -50,-29" fill="color-mix(in srgb,var(--qui) 10%,var(--card))"/>
+          <circle r="30"/>
+        </g>
+        <text x="345" y="380" class="hand" font-size="24" fill="var(--qui)">benzeno</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SETOR 2: COMO FUNCIONA ===== -->
+<section class="band" id="como">
+  <div class="wrap">
+    <h2>Como funcionam as aulas</h2>
+    <div class="steps">
+      <div class="step"><div class="n hand">1.</div><h3>Combine o horário</h3><p>Chame no WhatsApp, diga a matéria e o conteúdo que você precisa e marcamos a aula.</p></div>
+      <div class="step"><div class="n hand">2.</div><h3>Aula ao vivo no Meet</h3><p>No horário, clique em “Entrar na aula ao vivo”. A explicação é passo a passo, sem pular etapas.</p></div>
+      <div class="step"><div class="n hand">3.</div><h3>Revise pelo banco de aulas</h3><p>O material da aula fica no banco de aulas, com exercícios resolvidos para estudar depois.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SETOR 3: CURRÍCULO DO PROFESSOR ===== -->
+<section class="band" id="curriculo" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <h2>Currículo do professor</h2>
+    <div class="cv">
+      <aside class="inst">
+        <div class="lg"><img src="img/logo-ime-usp.png" alt="Logotipo do IME-USP" width="140" height="171"></div>
+        <div class="grau">Licenciatura em Matemática</div>
+        <div class="uni">Universidade de São Paulo (USP)</div>
+        <a class="btn" href="https://www.linkedin.com/in/francisco-jorge-bas%C3%ADlio-12883470/" target="_blank" rel="noopener">Ver perfil no LinkedIn</a>
+      </aside>
+      <div class="cvb">
+        <div>
+          <h3>Formação acadêmica</h3>
+          <p><b>Universidade de São Paulo</b> — Licenciatura em Matemática.</p>
+        </div>
+        <div>
+          <h3>Trajetória</h3>
+          <p>Professor de Matemática com trajetória consolidada no Colégio Militar de Brasília, instituição de referência nacional em ensino e formação integral.</p>
+          <div class="tl">
+            <span class="yr">2012–2021</span>
+            <span class="rl"><b>Colégio Militar de Brasília</b><span>Docente e, depois, Coordenador da Disciplina de Matemática</span></span>
+          </div>
+          <p style="margin-top:12px">Lecionou para turmas do Ensino Fundamental e, com foco prioritário, do Ensino Médio. Ao longo de quase uma década, desenvolveu e aplicou planos de ensino, metodologias e avaliações voltados para uma formação acadêmica sólida e para a preparação dos estudantes para o ensino superior.</p>
+        </div>
+        <div>
+          <h3>Ensino remoto</h3>
+          <p>Com a suspensão das aulas presenciais, participou ativamente da nova dinâmica do Ambiente Virtual de Aprendizagem (AVA): criou conteúdos, desenvolveu materiais e implementou estratégias didáticas adaptadas ao ensino remoto, assegurando a continuidade e a qualidade do aprendizado.</p>
+        </div>
+        <div>
+          <h3>Áreas de atuação</h3>
+          <div class="areas">
+            <div class="area"><b>Ensino Médio</b><div class="pills"><span class="pill">Matemática</span><span class="pill">Álgebra</span><span class="pill">Geometria</span><span class="pill">Estatística</span><span class="pill">Trigonometria</span><span class="pill">ENEM e vestibular</span></div></div>
+            <div class="area"><b>Ensino Superior</b><div class="pills"><span class="pill">Cálculo</span><span class="pill">Álgebra Linear</span><span class="pill">Geometria Analítica</span><span class="pill">Matemática Aplicada</span></div></div>
+          </div>
+        </div>
+        <div>
+          <h3>Diferenciais</h3>
+          <div class="pills"><span class="pill">Gestão pedagógica</span><span class="pill">Liderança de equipe docente</span><span class="pill">Adaptação de metodologias</span><span class="pill">Tecnologias educacionais</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SETOR 4: DISCIPLINAS ===== -->
+<section class="band paper" id="disciplinas">
+  <div class="wrap">
+    <h2>Disciplinas</h2>
+    <div class="disc">
+      <div class="d mat"><h3>Matemática</h3><p>Funções, trigonometria, geometria plana e analítica, vetores.</p><div class="row" data-d="matematica"></div></div>
+      <div class="d fis"><h3>Física</h3><p>Cinemática, vetores, dinâmica, termodinâmica e laboratórios animados.</p><div class="row" data-d="fisica"></div></div>
+      <div class="d qui"><h3>Química</h3><p>Química orgânica com listas comentadas questão a questão.</p><div class="row" data-d="quimica"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SETOR 5: BANCO DE AULAS ===== -->
+<section class="band bank" id="aulas">
+  <div class="wrap">
+    <h2>Banco de aulas</h2>
+    <p class="lead">Clique em “Abrir aula” para ver o material completo numa nova aba, com as animações e as resoluções.</p>
+    <div class="tools">
+      <label class="search"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="q" type="search" placeholder="Buscar aula ou assunto (ex.: vetores)" aria-label="Buscar aula"></label>
+      <div class="chips" role="group" aria-label="Filtrar por disciplina">
+        <button class="chip" data-f="todas" aria-pressed="true">Todas</button>
+        <button class="chip" data-f="matematica" aria-pressed="false">Matemática</button>
+        <button class="chip" data-f="fisica" aria-pressed="false">Física</button>
+        <button class="chip" data-f="quimica" aria-pressed="false">Química</button>
+      </div>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ===== SETOR 6: CONTATO ===== -->
+<section class="band contact" id="contato">
+  <div class="wrap">
+    <h2>Contato e suporte</h2>
+    <p class="lead">Dúvidas sobre horários, valores ou o material? Fale comigo.</p>
+    <div class="cgrid">
+      <a class="c" id="cWhats" href="#" target="_blank" rel="noopener"><small>WhatsApp</small><strong id="tWhats"></strong></a>
+      <a class="c" id="cMail" href="#"><small>E-mail</small><strong id="tMail"></strong></a>
+      <a class="c" id="cMeet" href="#" target="_blank" rel="noopener"><small>Sala da aula ao vivo</small><strong>Google Meet</strong></a>
+    </div>
+  </div>
+</section>
+</main>
+<footer>© <span id="ano"></span> Exatas Particulares · Prof. Jorge Basílio</footer>
+
+<script src="aulas.js"></script>
+<script>
+{
+  const NOMES={matematica:"Matemática",fisica:"Física",quimica:"Química"};
+  const COR={matematica:"var(--mat)",fisica:"var(--fis)",quimica:"var(--qui)"};
+  const cfg=(typeof CONFIG!=="undefined")?CONFIG:{drive:{}};
+  const lista=(typeof AULAS!=="undefined")?AULAS:[];
+  const $=s=>document.querySelector(s);
+
+  // contatos e links vindos do aulas.js
+  $("#btnMeet").href=cfg.meet||"#";$("#cMeet").href=cfg.meet||"#";
+  $("#cWhats").href="https://wa.me/"+(cfg.whatsapp||"")+"?text="+encodeURIComponent("Olá, professor! Gostaria de informações sobre as aulas.");
+  $("#tWhats").textContent=cfg.whatsappTexto||"";
+  $("#cMail").href="mailto:"+(cfg.email||"");$("#tMail").textContent=cfg.email||"";
+  $("#ano").textContent=new Date().getFullYear();
+
+  // botões de cada disciplina
+  document.querySelectorAll(".d .row").forEach(r=>{
+    const d=r.dataset.d,n=lista.filter(a=>a.disciplina===d).length;
+    let h=`<a href="#aulas" data-go="${d}">Ver ${n} ${n===1?"aula":"aulas"}</a>`;
+    if(cfg.drive&&cfg.drive[d])h+=`<a href="${cfg.drive[d]}" target="_blank" rel="noopener">Pasta no Drive</a>`;
+    r.innerHTML=h;
+  });
+
+  // banco de aulas
+  let filtro="todas";const estado={};
+  const norm=t=>(t||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+  const esc=t=>(t||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  function render(){
+    const q=norm($("#q").value);
+    const vis=lista.filter(a=>(filtro==="todas"||a.disciplina===filtro)&&(!q||norm(a.titulo+" "+a.assunto+" "+a.descricao).includes(q)));
+    $("#count").textContent=vis.length+(vis.length===1?" aula encontrada":" aulas encontradas");
+    $("#grid").innerHTML=vis.length?vis.map(a=>{
+      const off=estado[a.arquivo]===false;
+      return `<article class="aula${off?" off":""}" style="--c:${COR[a.disciplina]||"var(--ink)"}">
+        <span class="tag">${NOMES[a.disciplina]||""} · ${esc(a.assunto)}</span>
+        <h3>${esc(a.titulo)}</h3><p>${esc(a.descricao)}</p>
+        <div class="go"><a href="${encodeURI(a.arquivo)}" target="_blank" rel="noopener">Abrir aula</a>${off?'<span class="st">em breve</span>':""}</div>
+      </article>`}).join(""):`<div class="empty">Nenhuma aula encontrada. Tente outra palavra ou escolha “Todas”.</div>`;
+  }
+  function setFiltro(f){filtro=f;document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.f===f));render()}
+  document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>setFiltro(c.dataset.f)));
+  document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)setFiltro(g.dataset.go)});
+  $("#q").addEventListener("input",render);
+  render();
+
+  // marca como "em breve" as aulas cujo arquivo ainda não foi enviado
+  if(location.protocol.startsWith("http")){
+    Promise.all(lista.map(a=>fetch(encodeURI(a.arquivo),{method:"HEAD"}).then(r=>{estado[a.arquivo]=r.ok}).catch(()=>{}))).then(render);
+  }
+}
+</script>
+</body>
+</html>
