@@ -1,12 +1,16 @@
 /* =========================================================
-   BANCO DE AULAS — é SÓ ESTE ARQUIVO que você edita
+   CATÁLOGO DO SITE — é SÓ ESTE ARQUIVO que você edita
    ---------------------------------------------------------
-   1) Coloque o arquivo .html da aula na pasta certa:
-        aulas/matematica/   aulas/fisica/   aulas/quimica/
-   2) Copie um bloco { ... } abaixo, cole no fim da lista
-      e troque os textos. Pronto: a aula aparece no site.
+   Setor A: CONFIG    (contatos, Meet, Drive)
+   Setor B: AULAS     (arquivos em aulas/matematica, aulas/fisica, aulas/quimica)
+   Setor C: QUESTOES  (arquivos em questoes/matematica, questoes/fisica, questoes/quimica)
+
+   Campos extras opcionais em cada bloco:
+     protegida: true  -> mostra o cadeado (arquivo feito no protetor.html)
+     oculta: true     -> não aparece na lista (você manda o link direto ao aluno)
    ========================================================= */
 
+/* ---------------- SETOR A: CONFIGURAÇÕES ---------------- */
 const CONFIG = {
   professor: "Prof. Jorge Basílio",
   whatsapp: "5561985427780",              // só números, com 55 + DDD
@@ -20,11 +24,16 @@ const CONFIG = {
   }
 };
 
+/* ---------------- SETOR B: BANCO DE AULAS ---------------- */
 const AULAS = [
   // ---------- MATEMÁTICA ----------
   { titulo: "Teorema de Pitágoras — aula de exemplo", disciplina: "matematica", assunto: "Geometria plana",
     descricao: "Modelo de aula com passo a passo. Use como referência e apague quando quiser.",
     arquivo: "aulas/matematica/EXEMPLO_PITAGORAS.html" },
+
+  { titulo: "Teorema de Pitágoras — exemplo com senha", disciplina: "matematica", assunto: "Geometria plana",
+    descricao: "Exemplo de aula protegida. Senha de teste: teste1234",
+    arquivo: "aulas/matematica/EXEMPLO_PITAGORAS_PROTEGIDO.html", protegida: true },
 
   { titulo: "Funções Trigonométricas", disciplina: "matematica", assunto: "Funções",
     descricao: "Seno e cosseno: amplitude, período, frequência, imagem, máximo e mínimo, lei de formação.",
@@ -33,10 +42,6 @@ const AULAS = [
   { titulo: "Funções pares e ímpares", disciplina: "matematica", assunto: "Funções",
     descricao: "Exercícios de funções pares, ímpares, periódicas e composição, com resolução ocultável.",
     arquivo: "aulas/matematica/FUNCOES_PARES_E_IMPARES.html" },
-
-  { titulo: "Lista de questões — Geometria plana", disciplina: "matematica", assunto: "Geometria plana",
-    descricao: "Questões de ENEM e vestibulares, uma aba por questão, com resolução ocultável.",
-    arquivo: "aulas/matematica/LISTA_DE_QUESTOES.html" },
 
   { titulo: "Propriedades da adição de vetores", disciplina: "matematica", assunto: "Geometria analítica",
     descricao: "Resoluções do livro Geometria Analítica — um tratamento vetorial (Camargo & Boulos).",
@@ -68,24 +73,33 @@ const AULAS = [
     arquivo: "aulas/fisica/CICLO_DE_CARNOT.html" },
 
   // ---------- QUÍMICA ----------
+  // (nenhuma aula ainda)
+
+  // EXEMPLO de aula com senha (tire as // para usar):
+  // { titulo: "Vetores — aula do João", disciplina: "fisica", assunto: "Vetores",
+  //   descricao: "Aula de 14/11 com os exercícios resolvidos.",
+  //   arquivo: "aulas/fisica/VETORES_JOAO_PROTEGIDO.html", protegida: true },
+];
+
+/* ---------------- SETOR C: BANCO DE QUESTÕES ---------------- */
+const QUESTOES = [
+  { titulo: "Lista de questões — Geometria plana", disciplina: "matematica", assunto: "Geometria plana",
+    descricao: "Questões de ENEM e vestibulares, uma aba por questão, com resolução ocultável.",
+    arquivo: "questoes/matematica/LISTA_DE_QUESTOES.html" },
+
   { titulo: "Química Orgânica — Lista 1", disciplina: "quimica", assunto: "Química orgânica",
     descricao: "Lista comentada, uma aba por questão.",
-    arquivo: "aulas/quimica/LISTA_1_ORGANICA.html" },
+    arquivo: "questoes/quimica/LISTA_1_ORGANICA.html" },
 
   { titulo: "Química Orgânica — Lista 2", disciplina: "quimica", assunto: "Química orgânica",
     descricao: "Lista comentada, uma aba por questão.",
-    arquivo: "aulas/quimica/LISTA_2_ORGANICA.html" },
+    arquivo: "questoes/quimica/LISTA_2_ORGANICA.html" },
 
   { titulo: "Química Orgânica — Lista 3", disciplina: "quimica", assunto: "Química orgânica",
     descricao: "Lista comentada, uma aba por questão.",
-    arquivo: "aulas/quimica/LISTA_3_ORGANICA.html" },
+    arquivo: "questoes/quimica/LISTA_3_ORGANICA.html" },
 
   { titulo: "Química Orgânica — Lista 4", disciplina: "quimica", assunto: "Química orgânica",
     descricao: "Lista comentada, uma aba por questão.",
-    arquivo: "aulas/quimica/LISTA_4_ORGANICA.html" },
-
-  // Para adicionar uma aula nova, copie o modelo abaixo (tire as duas barras // do começo das linhas):
-  // { titulo: "Nome da aula", disciplina: "fisica", assunto: "Assunto",
-  //   descricao: "Uma frase sobre a aula.",
-  //   arquivo: "aulas/fisica/NOME_DO_ARQUIVO.html" },
+    arquivo: "questoes/quimica/LISTA_4_ORGANICA.html" },
 ];

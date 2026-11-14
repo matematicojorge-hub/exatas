@@ -109,6 +109,9 @@ nav a.it:hover{color:var(--ink)}
 .aula .go a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:8px;background:var(--c);color:var(--on);font-weight:700;text-decoration:none}
 .aula.off .go a{background:var(--line);color:var(--soft);pointer-events:none}
 .aula .st{font-size:13px;color:var(--soft)}
+.bank.alt{background:var(--bg)}
+.lock{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--soft)}
+.lock svg{width:14px;height:14px}
 .empty{padding:36px;text-align:center;color:var(--soft);border:2px dashed var(--line);border-radius:12px}
 /* contato */
 .contact{background:var(--band);color:var(--bandink)}
@@ -130,7 +133,8 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
     <a class="it" href="#como">Como funciona</a>
     <a class="it" href="#curriculo">Currículo</a>
     <a class="it" href="#disciplinas">Disciplinas</a>
-    <a class="it" href="#aulas">Banco de aulas</a>
+    <a class="it" href="#aulas">Aulas</a>
+    <a class="it" href="#questoes">Questões</a>
     <a class="it" href="#contato">Contato</a>
   </nav>
 </header>
@@ -261,10 +265,10 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
 <section class="band bank" id="aulas">
   <div class="wrap">
     <h2>Banco de aulas</h2>
-    <p class="lead">Clique em “Abrir aula” para ver o material completo numa nova aba, com as animações e as resoluções.</p>
+    <p class="lead">Clique em “Abrir” para ver o material completo numa nova aba. As aulas com cadeado pedem a senha que o professor enviou para você.</p>
     <div class="tools">
       <label class="search"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <input id="q" type="search" placeholder="Buscar aula ou assunto (ex.: vetores)" aria-label="Buscar aula"></label>
+        <input class="q" type="search" placeholder="Buscar aula ou assunto (ex.: vetores)" aria-label="Buscar em banco de aulas"></label>
       <div class="chips" role="group" aria-label="Filtrar por disciplina">
         <button class="chip" data-f="todas" aria-pressed="true">Todas</button>
         <button class="chip" data-f="matematica" aria-pressed="false">Matemática</button>
@@ -272,12 +276,32 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
         <button class="chip" data-f="quimica" aria-pressed="false">Química</button>
       </div>
     </div>
-    <p class="count" id="count"></p>
-    <div class="grid" id="grid"></div>
+    <p class="count"></p>
+    <div class="grid"></div>
   </div>
 </section>
 
-<!-- ===== SETOR 6: CONTATO ===== -->
+<!-- ===== SETOR 6: BANCO DE QUESTÕES ===== -->
+<section class="band bank alt" id="questoes">
+  <div class="wrap">
+    <h2>Banco de questões</h2>
+    <p class="lead">Listas de exercícios com resolução passo a passo, separadas por disciplina.</p>
+    <div class="tools">
+      <label class="search"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input class="q" type="search" placeholder="Buscar lista ou assunto (ex.: orgânica)" aria-label="Buscar em banco de questões"></label>
+      <div class="chips" role="group" aria-label="Filtrar por disciplina">
+        <button class="chip" data-f="todas" aria-pressed="true">Todas</button>
+        <button class="chip" data-f="matematica" aria-pressed="false">Matemática</button>
+        <button class="chip" data-f="fisica" aria-pressed="false">Física</button>
+        <button class="chip" data-f="quimica" aria-pressed="false">Química</button>
+      </div>
+    </div>
+    <p class="count"></p>
+    <div class="grid"></div>
+  </div>
+</section>
+
+<!-- ===== SETOR 7: CONTATO ===== -->
 <section class="band contact" id="contato">
   <div class="wrap">
     <h2>Contato e suporte</h2>
@@ -310,37 +334,50 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
 
   // botões de cada disciplina
   document.querySelectorAll(".d .row").forEach(r=>{
-    const d=r.dataset.d,n=lista.filter(a=>a.disciplina===d).length;
-    let h=`<a href="#aulas" data-go="${d}">Ver ${n} ${n===1?"aula":"aulas"}</a>`;
+    const d=r.dataset.d,n=lista.filter(a=>a.disciplina===d&&!a.oculta).length;
+    const nq=(typeof QUESTOES!=="undefined"?QUESTOES:[]).filter(a=>a.disciplina===d&&!a.oculta).length;
+    let h="";
+    if(n)h+=`<a href="#aulas" data-go="${d}">${n} ${n===1?"aula":"aulas"}</a>`;
+    if(nq)h+=`<a href="#questoes" data-goq="${d}">${nq} ${nq===1?"lista":"listas"} de questões</a>`;
     if(cfg.drive&&cfg.drive[d])h+=`<a href="${cfg.drive[d]}" target="_blank" rel="noopener">Pasta no Drive</a>`;
     r.innerHTML=h;
   });
 
-  // banco de aulas
-  let filtro="todas";const estado={};
-  const norm=t=>(t||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+  // bancos de aulas e de questões (mesmo funcionamento)
+  const QS=(typeof QUESTOES!=="undefined")?QUESTOES:[];
+  const estado={};
+  const norm=t=>(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
   const esc=t=>(t||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-  function render(){
-    const q=norm($("#q").value);
-    const vis=lista.filter(a=>(filtro==="todas"||a.disciplina===filtro)&&(!q||norm(a.titulo+" "+a.assunto+" "+a.descricao).includes(q)));
-    $("#count").textContent=vis.length+(vis.length===1?" aula encontrada":" aulas encontradas");
-    $("#grid").innerHTML=vis.length?vis.map(a=>{
-      const off=estado[a.arquivo]===false;
-      return `<article class="aula${off?" off":""}" style="--c:${COR[a.disciplina]||"var(--ink)"}">
-        <span class="tag">${NOMES[a.disciplina]||""} · ${esc(a.assunto)}</span>
-        <h3>${esc(a.titulo)}</h3><p>${esc(a.descricao)}</p>
-        <div class="go"><a href="${encodeURI(a.arquivo)}" target="_blank" rel="noopener">Abrir aula</a>${off?'<span class="st">em breve</span>':""}</div>
-      </article>`}).join(""):`<div class="empty">Nenhuma aula encontrada. Tente outra palavra ou escolha “Todas”.</div>`;
+  const CAD='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>';
+  const bancos=[];
+  function banco(sec,dados,nome){
+    const b={sec,dados:dados.filter(a=>!a.oculta),filtro:"todas",nome};
+    b.render=()=>{
+      const q=norm(sec.querySelector(".q").value);
+      const vis=b.dados.filter(a=>(b.filtro==="todas"||a.disciplina===b.filtro)&&(!q||norm(a.titulo+" "+a.assunto+" "+a.descricao).includes(q)));
+      sec.querySelector(".count").textContent=vis.length+" "+(vis.length===1?b.nome[0]:b.nome[1]);
+      sec.querySelector(".grid").innerHTML=vis.length?vis.map(a=>{
+        const off=estado[a.arquivo]===false;
+        return `<article class="aula${off?" off":""}" style="--c:${COR[a.disciplina]||"var(--ink)"}">
+          <span class="tag">${NOMES[a.disciplina]||""} · ${esc(a.assunto)}</span>
+          <h3>${esc(a.titulo)}</h3><p>${esc(a.descricao)}</p>
+          <div class="go"><a href="${encodeURI(a.arquivo)}" target="_blank" rel="noopener">Abrir</a>${off?'<span class="st">em breve</span>':(a.protegida?`<span class="lock">${CAD}com senha</span>`:"")}</div>
+        </article>`}).join(""):`<div class="empty">Nada encontrado. Tente outra palavra ou escolha “Todas”.</div>`;
+    };
+    b.set=f=>{b.filtro=f;sec.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.f===f));b.render()};
+    sec.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>b.set(c.dataset.f)));
+    sec.querySelector(".q").addEventListener("input",b.render);
+    b.render();bancos.push(b);return b;
   }
-  function setFiltro(f){filtro=f;document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.f===f));render()}
-  document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>setFiltro(c.dataset.f)));
-  document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)setFiltro(g.dataset.go)});
-  $("#q").addEventListener("input",render);
-  render();
+  const bAulas=banco($("#aulas"),lista,["aula encontrada","aulas encontradas"]);
+  banco($("#questoes"),QS,["lista encontrada","listas encontradas"]);
+  
+  const bQuest=bancos[1];
+  document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)bAulas.set(g.dataset.go);const h=e.target.closest("[data-goq]");if(h)bQuest.set(h.dataset.goq)});
 
-  // marca como "em breve" as aulas cujo arquivo ainda não foi enviado
+  // marca como "em breve" o que ainda não foi enviado
   if(location.protocol.startsWith("http")){
-    Promise.all(lista.map(a=>fetch(encodeURI(a.arquivo),{method:"HEAD"}).then(r=>{estado[a.arquivo]=r.ok}).catch(()=>{}))).then(render);
+    Promise.all([...lista,...QS].map(a=>fetch(encodeURI(a.arquivo),{method:"HEAD"}).then(r=>{estado[a.arquivo]=r.ok}).catch(()=>{}))).then(()=>bancos.forEach(b=>b.render()));
   }
 }
 </script>
