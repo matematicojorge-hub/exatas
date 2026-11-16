@@ -57,7 +57,7 @@ const AULAS = [
 
   { titulo: "Referencial e trajetória", disciplina: "fisica", assunto: "Cinemática",
     descricao: "Conceitos iniciais de cinemática: repouso, movimento, referencial e trajetória.",
-    arquivo: "aulas/fisica/REFERENCIAL_E_TRAJETORIA.html" },
+    arquivo: "aulas/fisica/REFERENCIAL_E_TRAJETORIA_PROTEGIDO.html", protegida: true },
 
   { titulo: "MU — Função horária da posição", disciplina: "fisica", assunto: "Cinemática",
     descricao: "Movimento uniforme, s = s₀ + v·t e encontro de móveis.",
