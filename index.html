@@ -111,6 +111,30 @@ nav a.it:hover{color:var(--ink)}
 .pills{display:flex;flex-wrap:wrap;gap:8px}
 .pill{border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:14px;background:var(--bg)}
 @media(max-width:860px){.cv{grid-template-columns:1fr}.inst{position:static}.areas{grid-template-columns:1fr}}
+/* minhas aulas (YouTube) */
+.vid-box{position:relative;aspect-ratio:16/9;max-width:960px;margin-top:22px;border-radius:14px;overflow:hidden;background:#0d1422;box-shadow:0 18px 40px -22px rgba(22,33,58,.5)}
+.vid-box iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid-acts{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin-top:18px}
+.vid-dica{color:var(--soft);font-size:14px}
+/* área do aluno */
+.aluno{background:var(--green2);border-block:1px solid var(--line)}
+.al-grid{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:24px;margin-top:24px;align-items:start}
+.al-ja{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--green);border-radius:12px;padding:22px}
+.al-ja p{color:var(--soft);margin:8px 0 16px}
+.al-ja .btn{width:100%;justify-content:center}
+.al-ja .al-obs{font-size:14px;margin:12px 0 0}
+.al-tur h3{margin-bottom:12px}
+.tg{margin-bottom:18px}
+.tg h4{margin:0 0 10px;font-size:16px;color:var(--soft);font-weight:700}
+.tg-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.tc{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.tc .cod{font-size:13px;font-weight:700;color:var(--c)}
+.tc b{font-size:18px;line-height:1.2}
+.tc p{margin:0;color:var(--soft);font-size:15px}
+.tc a,.tc .eb{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:8px;font-weight:700;text-decoration:none;padding:0 14px}
+.tc a{background:var(--green);color:#fff}
+.tc .eb{background:var(--line);color:var(--soft)}
+@media(max-width:860px){.al-grid{grid-template-columns:1fr}}
 /* formação complementar */
 .fc-resumo{color:var(--soft)}
 .fc-dest{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:6px 0 18px}
@@ -175,10 +199,10 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
     <img class="flag" src="img/bandeira-brasil.png" alt="Bandeira do Brasil" width="40" height="26">
     <a class="logo" href="#inicio"><svg viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="28" height="28" rx="7" fill="var(--ink)"/><path d="M7 20 Q11 6 15 15 T23 10" fill="none" stroke="var(--red)" stroke-width="2.6" stroke-linecap="round"/></svg>Exatas Particulares</a>
     <a class="it" href="#como">Como funciona</a>
+    <a class="it" href="#videos">Minhas aulas</a>
+    <a class="it" href="#aluno">Área do aluno</a>
     <a class="it" href="#curriculo">Currículo</a>
     <a class="it" href="#disciplinas">Disciplinas</a>
-    <a class="it" href="#aulas">Aulas</a>
-    <a class="it" href="#questoes">Questões</a>
     <a class="it" href="#contato">Contato</a>
     <span class="quebra" aria-hidden="true"></span>
     <img class="flag br" src="img/bandeira-ceara.png" alt="Bandeira do Ceará" width="38" height="26">
@@ -196,7 +220,7 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
       <p class="lead">Cada conteúdo explicado passo a passo, do mais simples ao mais complexo, e todo o material da aula disponível para você revisar quando quiser.</p>
       <div class="acts">
         <a class="btn main" id="btnMeet" href="#" target="_blank" rel="noopener">Entrar na aula ao vivo</a>
-        <a class="btn" href="#aulas">Ver banco de aulas</a>
+        <a class="btn" href="#videos">Conheça minhas aulas</a>
       </div>
       <div class="cred"><span><b>Licenciado em Matemática</b> pela USP</span><span><b>Colégio Militar de Brasília</b> (2012–2021)</span><span>Ex-coordenador de <b>Matemática</b></span><span>Professor no <b>Ensino Superior</b></span><span>Aulas pelo <b>Google Meet</b></span></div>
     </div>
@@ -214,7 +238,40 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
     <div class="steps">
       <div class="step"><div class="n hand">1.</div><h3>Combine o horário</h3><p>Chame no WhatsApp, diga a matéria e o conteúdo que você precisa e marcamos a aula.</p></div>
       <div class="step"><div class="n hand">2.</div><h3>Aula ao vivo no Meet</h3><p>No horário, clique em “Entrar na aula ao vivo”. A explicação é passo a passo, sem pular etapas.</p></div>
-      <div class="step"><div class="n hand">3.</div><h3>Revise pelo banco de aulas</h3><p>O material da aula fica no banco de aulas, com exercícios resolvidos para estudar depois.</p></div>
+      <div class="step"><div class="n hand">3.</div><h3>Revise na Área do aluno</h3><p>O material de cada aula fica na sua turma do Google Classroom, com exercícios resolvidos para estudar depois.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MINHAS AULAS (canal do YouTube) ===== -->
+<section class="band videos" id="videos">
+  <div class="wrap">
+    <h2>Conheça minhas aulas</h2>
+    <p class="lead">Veja como funciona o passo a passo na prática. Os vídeos mais recentes do canal aparecem aqui automaticamente.</p>
+    <div class="vid-box"><iframe id="ytPlayer" title="Aulas do Prof. Jorge Basílio no YouTube" src="about:blank" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+    <div class="vid-acts">
+      <a class="btn main" id="btnCanal" href="#" target="_blank" rel="noopener">Ver o canal completo no YouTube</a>
+      <span class="vid-dica">No player, o ícone de lista (canto superior direito) mostra todos os vídeos.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ÁREA DO ALUNO (Google Classroom) ===== -->
+<section class="band aluno" id="aluno">
+  <div class="wrap">
+    <h2>Área do aluno</h2>
+    <p class="lead">O material de cada aula fica na turma do Google Classroom. Entre com o mesmo Gmail que você informou ao professor.</p>
+    <div class="al-grid">
+      <div class="al-ja">
+        <h3>Já sou aluno</h3>
+        <p>Abra o Classroom e veja as turmas em que você está matriculado, com os materiais e as atividades.</p>
+        <a class="btn main" id="btnClass" href="https://classroom.google.com/" target="_blank" rel="noopener">Abrir minhas turmas</a>
+        <p class="al-obs">Não aparece a turma? Confira se entrou com o Gmail certo ou fale com o professor.</p>
+      </div>
+      <div class="al-tur">
+        <h3>Turmas disponíveis</h3>
+        <div id="turmas"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -306,46 +363,6 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
   </div>
 </section>
 
-<!-- ===== SETOR 5: BANCO DE AULAS ===== -->
-<section class="band bank" id="aulas">
-  <div class="wrap">
-    <h2>Banco de aulas</h2>
-    <p class="lead">Clique em “Abrir” para ver o material completo numa nova aba. As aulas com cadeado pedem a senha que o professor enviou para você.</p>
-    <div class="tools">
-      <label class="search"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <input class="q" type="search" placeholder="Buscar aula ou assunto (ex.: vetores)" aria-label="Buscar em banco de aulas"></label>
-      <div class="chips" role="group" aria-label="Filtrar por disciplina">
-        <button class="chip" data-f="todas" aria-pressed="true">Todas</button>
-        <button class="chip" data-f="matematica" aria-pressed="false">Matemática</button>
-        <button class="chip" data-f="fisica" aria-pressed="false">Física</button>
-        <button class="chip" data-f="quimica" aria-pressed="false">Química</button>
-      </div>
-    </div>
-    <p class="count"></p>
-    <div class="grid"></div>
-  </div>
-</section>
-
-<!-- ===== SETOR 6: BANCO DE QUESTÕES ===== -->
-<section class="band bank alt" id="questoes">
-  <div class="wrap">
-    <h2>Banco de questões</h2>
-    <p class="lead">Listas de exercícios com resolução passo a passo, separadas por disciplina.</p>
-    <div class="tools">
-      <label class="search"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <input class="q" type="search" placeholder="Buscar lista ou assunto (ex.: orgânica)" aria-label="Buscar em banco de questões"></label>
-      <div class="chips" role="group" aria-label="Filtrar por disciplina">
-        <button class="chip" data-f="todas" aria-pressed="true">Todas</button>
-        <button class="chip" data-f="matematica" aria-pressed="false">Matemática</button>
-        <button class="chip" data-f="fisica" aria-pressed="false">Física</button>
-        <button class="chip" data-f="quimica" aria-pressed="false">Química</button>
-      </div>
-    </div>
-    <p class="count"></p>
-    <div class="grid"></div>
-  </div>
-</section>
-
 <!-- ===== SETOR 7: CONTATO ===== -->
 <section class="band contact" id="contato">
   <div class="wrap">
@@ -382,14 +399,30 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
 
   // botões de cada disciplina
   document.querySelectorAll(".d .row").forEach(r=>{
-    const d=r.dataset.d,n=lista.filter(a=>a.disciplina===d&&!a.oculta).length;
-    const nq=(typeof QUESTOES!=="undefined"?QUESTOES:[]).filter(a=>a.disciplina===d&&!a.oculta).length;
-    let h="";
-    if(n)h+=`<a href="#aulas" data-go="${d}">${n} ${n===1?"aula":"aulas"}</a>`;
-    if(nq)h+=`<a href="#questoes" data-goq="${d}">${nq} ${nq===1?"lista":"listas"} de questões</a>`;
+    const d=r.dataset.d;
+    let h=`<a href="#videos">Ver aulas em vídeo</a>`;
     if(cfg.drive&&cfg.drive[d])h+=`<a href="${cfg.drive[d]}" target="_blank" rel="noopener">Pasta no Drive</a>`;
     r.innerHTML=h;
   });
+
+  // minhas aulas: canal do YouTube (configurado em aulas.js)
+  if(cfg.youtubeCanal){
+    const id=cfg.youtubeCanal,up="UU"+id.slice(2);
+    $("#ytPlayer").src="https://www.youtube-nocookie.com/embed/videoseries?list="+up;
+    $("#btnCanal").href="https://www.youtube.com/channel/"+id+"/videos";
+  }
+
+  // área do aluno (TURMAS em aulas.js)
+  if(cfg.classroom)$("#btnClass").href=cfg.classroom;
+  {
+    const T=(typeof TURMAS!=="undefined")?TURMAS:[],box=$("#turmas");
+    const e=t=>(t||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+    const grupos=[...new Set(T.map(t=>t.grupo))];
+    box.innerHTML=T.length?grupos.map(g=>`<div class="tg"><h4>${e(g)}</h4><div class="tg-list">${T.filter(t=>t.grupo===g).map(t=>{
+      const msg=encodeURIComponent(`Olá, professor! Quero participar da turma ${t.codigo} – ${t.nome} (${t.grupo}).`);
+      const ab=t.status!=="em breve";
+      return `<div class="tc" style="--c:${COR[t.disciplina]||"var(--ink)"}"><span class="cod">${e(t.codigo)}</span><b>${e(t.nome)}</b><p>${e(t.descricao)}</p>${ab?`<a href="https://wa.me/${cfg.whatsapp}?text=${msg}" target="_blank" rel="noopener">Quero participar</a>`:`<span class="eb">Em breve</span>`}</div>`}).join("")}</div></div>`).join(""):'<div class="empty">Novas turmas em breve.</div>';
+  }
 
   // formação complementar (certificacoes.js)
   if(typeof CERTIFICACOES!=="undefined"){
@@ -405,42 +438,6 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
     $("#fcQ").addEventListener("input",desenharFC);desenharFC();
   }
 
-  // bancos de aulas e de questões (mesmo funcionamento)
-  const QS=(typeof QUESTOES!=="undefined")?QUESTOES:[];
-  const estado={};
-  const norm=t=>(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-  const esc=t=>(t||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-  const CAD='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>';
-  const bancos=[];
-  function banco(sec,dados,nome){
-    const b={sec,dados:dados.filter(a=>!a.oculta),filtro:"todas",nome};
-    b.render=()=>{
-      const q=norm(sec.querySelector(".q").value);
-      const vis=b.dados.filter(a=>(b.filtro==="todas"||a.disciplina===b.filtro)&&(!q||norm(a.titulo+" "+a.assunto+" "+a.descricao).includes(q)));
-      sec.querySelector(".count").textContent=vis.length+" "+(vis.length===1?b.nome[0]:b.nome[1]);
-      sec.querySelector(".grid").innerHTML=vis.length?vis.map(a=>{
-        const off=estado[a.arquivo]===false;
-        return `<article class="aula${off?" off":""}" style="--c:${COR[a.disciplina]||"var(--ink)"}">
-          <span class="tag">${NOMES[a.disciplina]||""} · ${esc(a.assunto)}</span>
-          <h3>${esc(a.titulo)}</h3><p>${esc(a.descricao)}</p>
-          <div class="go"><a href="${encodeURI(a.arquivo)}" target="_blank" rel="noopener">Abrir</a>${off?'<span class="st">em breve</span>':(a.protegida?`<span class="lock">${CAD}com senha</span>`:"")}</div>
-        </article>`}).join(""):`<div class="empty">Nada encontrado. Tente outra palavra ou escolha “Todas”.</div>`;
-    };
-    b.set=f=>{b.filtro=f;sec.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.f===f));b.render()};
-    sec.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>b.set(c.dataset.f)));
-    sec.querySelector(".q").addEventListener("input",b.render);
-    b.render();bancos.push(b);return b;
-  }
-  const bAulas=banco($("#aulas"),lista,["aula encontrada","aulas encontradas"]);
-  banco($("#questoes"),QS,["lista encontrada","listas encontradas"]);
-  
-  const bQuest=bancos[1];
-  document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)bAulas.set(g.dataset.go);const h=e.target.closest("[data-goq]");if(h)bQuest.set(h.dataset.goq)});
-
-  // marca como "em breve" o que ainda não foi enviado
-  if(location.protocol.startsWith("http")){
-    Promise.all([...lista,...QS].map(a=>fetch(encodeURI(a.arquivo),{method:"HEAD"}).then(r=>{estado[a.arquivo]=r.ok}).catch(()=>{}))).then(()=>bancos.forEach(b=>b.render()));
-  }
 }
 </script>
 </body>
