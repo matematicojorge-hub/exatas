@@ -2,8 +2,9 @@
    CATÁLOGO DO SITE — é SÓ ESTE ARQUIVO que você edita
    ---------------------------------------------------------
    Setor A: CONFIG    (contatos, Meet, Drive)
-   Setor B: AULAS     (arquivos em aulas/matematica, aulas/fisica, aulas/quimica)
-   Setor C: QUESTOES  (arquivos em questoes/matematica, questoes/fisica, questoes/quimica)
+   Setor B: AULAS     (não aparecem mais no site; servem ao menu da Sala de aula)
+   Setor C: QUESTOES  (não aparecem mais no site; as listas ficam no Classroom)
+   Setor D: TURMAS    (turmas do Google Classroom, mostradas na "Área do aluno")
 
    Campos extras opcionais em cada bloco:
      protegida: true  -> mostra o cadeado (arquivo feito no protetor.html)
@@ -17,6 +18,8 @@ const CONFIG = {
   whatsappTexto: "(61) 98542-7780",
   email: "matematicojorge@gmail.com",
   meet: "https://meet.google.com/ort-dnzm-vhh",  // link fixo da sala do Meet
+  classroom: "https://classroom.google.com/",     // botão "Abrir minhas turmas"
+  youtubeCanal: "UC5EPcbC1S64oAOM8dAsbDhg",       // código do canal (seção "Conheça minhas aulas")
   drive: {                                 // links das pastas do Drive (opcional; deixe "" para esconder)
     matematica: "",
     fisica: "",
@@ -102,4 +105,23 @@ const QUESTOES = [
   { titulo: "Química Orgânica — Lista 4", disciplina: "quimica", assunto: "Química orgânica",
     descricao: "Lista comentada, uma aba por questão.",
     arquivo: "questoes/quimica/LISTA_4_ORGANICA.html" },
+];
+
+/* ---------------- SETOR D: TURMAS DO GOOGLE CLASSROOM ----------------
+   Cada turma vira um cartão na "Área do aluno", com o botão "Quero participar"
+   (abre o WhatsApp com a mensagem pronta). O código de convite NÃO vai aqui:
+   você manda só para o aluno que pediu.
+     grupo:  título do bloco (disciplina e série)
+     status: "aberta" ou "em breve"
+------------------------------------------------------------------------ */
+const TURMAS = [
+  { codigo: "AULA 001", nome: "Grandezas Físicas", grupo: "Física 1 · 1º ano do Ensino Médio", disciplina: "fisica",
+    descricao: "Medição, unidades e vetores.", status: "aberta" },
+
+  { codigo: "AULA 002", nome: "Estudo dos Movimentos", grupo: "Física 1 · 1º ano do Ensino Médio", disciplina: "fisica",
+    descricao: "Referencial, trajetória, velocidade e movimento uniforme.", status: "aberta" },
+
+  // Modelo para uma turma nova (tire as // do começo):
+  // { codigo: "AULA 003", nome: "Nome da turma", grupo: "Física 1 · 1º ano do Ensino Médio", disciplina: "fisica",
+  //   descricao: "Uma frase sobre a turma.", status: "em breve" },
 ];

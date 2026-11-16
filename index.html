@@ -248,9 +248,9 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
   <div class="wrap">
     <h2>Conheça minhas aulas</h2>
     <p class="lead">Veja como funciona o passo a passo na prática. Os vídeos mais recentes do canal aparecem aqui automaticamente.</p>
-    <div class="vid-box"><iframe id="ytPlayer" title="Aulas do Prof. Jorge Basílio no YouTube" src="about:blank" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+    <div class="vid-box"><iframe id="ytPlayer" title="Aulas do Prof. Jorge Basílio no YouTube" src="https://www.youtube-nocookie.com/embed/videoseries?list=UU5EPcbC1S64oAOM8dAsbDhg" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
     <div class="vid-acts">
-      <a class="btn main" id="btnCanal" href="#" target="_blank" rel="noopener">Ver o canal completo no YouTube</a>
+      <a class="btn main" id="btnCanal" href="https://www.youtube.com/channel/UC5EPcbC1S64oAOM8dAsbDhg/videos" target="_blank" rel="noopener">Ver o canal completo no YouTube</a>
       <span class="vid-dica">No player, o ícone de lista (canto superior direito) mostra todos os vídeos.</span>
     </div>
   </div>
@@ -406,8 +406,8 @@ footer{padding:22px max(5vw,16px);font-size:14px;color:var(--soft);text-align:ce
   });
 
   // minhas aulas: canal do YouTube (configurado em aulas.js)
-  if(cfg.youtubeCanal){
-    const id=cfg.youtubeCanal,up="UU"+id.slice(2);
+  {
+    const id=cfg.youtubeCanal||"UC5EPcbC1S64oAOM8dAsbDhg",up="UU"+id.slice(2); // canal padrão, caso o aulas.js esteja desatualizado
     $("#ytPlayer").src="https://www.youtube-nocookie.com/embed/videoseries?list="+up;
     $("#btnCanal").href="https://www.youtube.com/channel/"+id+"/videos";
   }
