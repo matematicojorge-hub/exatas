@@ -153,5 +153,5 @@ const CERTIFICACOES = [
   {"n": "Psicologia Aplicada à Reabilitação — Turma 2024A", "i": "IFRS", "a": null, "c": "inc"},
   {"n": "Português", "i": "Senac Ceará", "a": null, "c": "com"},
   {"n": "Advanced One — Fisk English Courses", "i": "Fundação Richard Hugh Fisk", "a": null, "c": "com"},
-  {"n": "1º Encontro da RPM — Revista do Professor de Matemática", "i": "Revista do Professor de Matemática (RPM)", "a": null, "c": "mat"},
+  {"n": "1º Encontro da RPM — Revista do Professor de Matemática", "i": "Universidade Presbiteriana Mackenzie · Sociedade Brasileira de Matemática", "a": 2002, "c": "mat"},
 ];
